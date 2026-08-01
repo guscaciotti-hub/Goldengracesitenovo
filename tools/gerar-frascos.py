@@ -123,11 +123,19 @@ def montar(slug: str, nome: str, cor: str) -> str:
 '''
 
 
+def compactar(svg: str) -> str:
+    """Tira comentários, recuo e quebras de linha — o arquivo vai para o 4G."""
+    import re
+    svg = re.sub(r"<!--.*?-->", "", svg, flags=re.S)
+    svg = re.sub(r"\n\s*", "", svg)
+    return re.sub(r">\s+<", "><", svg).strip() + "\n"
+
+
 def main() -> None:
     DESTINO.mkdir(parents=True, exist_ok=True)
     for slug, nome, cor in FRAGRANCIAS:
         caminho = DESTINO / f"rotulo-{slug}.svg"
-        caminho.write_text(montar(slug, nome, cor), encoding="utf-8")
+        caminho.write_text(compactar(montar(slug, nome, cor)), encoding="utf-8")
         print(f"{caminho.relative_to(RAIZ)}  {caminho.stat().st_size} bytes")
 
 

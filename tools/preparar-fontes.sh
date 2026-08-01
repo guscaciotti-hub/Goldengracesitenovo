@@ -14,16 +14,27 @@ TMP="$(mktemp -d)"
 trap 'rm -rf "$TMP"' EXIT
 
 baixar_e_reduzir() {
-  local nome="$1" url="$2"
+  local nome="$1" url="$2" peso_min="$3" peso_max="$4"
   curl -fsS "$url" -o "$TMP/$nome.woff2"
   pyftsubset "$TMP/$nome.woff2" \
-    --output-file="assets/fonts/$nome.woff2" \
+    --output-file="$TMP/$nome.sub.woff2" \
     --flavor=woff2 --unicodes="$UNICODES" --layout-features="$FEATURES" \
     --no-hinting --desubroutinize
+  # Corta o eixo variável na faixa de peso que o CSS realmente pede.
+  # Se você usar um peso fora dela, ajuste aqui E no @font-face do index.html.
+  python3 - "$TMP/$nome.sub.woff2" "assets/fonts/$nome.woff2" "$peso_min" "$peso_max" <<'PY'
+import io, sys
+from fontTools.ttLib import TTFont
+from fontTools.varLib import instancer
+origem, destino, minimo, maximo = sys.argv[1], sys.argv[2], int(sys.argv[3]), int(sys.argv[4])
+f = instancer.instantiateVariableFont(TTFont(origem), {"wght": (minimo, maximo)}, updateFontNames=False)
+buf = io.BytesIO(); f.flavor = "woff2"; f.save(buf)
+open(destino, "wb").write(buf.getvalue())
+PY
   printf '%-16s %6s -> %6s bytes\n' "$nome" \
     "$(stat -c%s "$TMP/$nome.woff2")" "$(stat -c%s "assets/fonts/$nome.woff2")"
 }
 
 mkdir -p assets/fonts
-baixar_e_reduzir playfair-latin "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2"
-baixar_e_reduzir inter-latin     "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2"
+baixar_e_reduzir playfair-latin "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" 500 600
+baixar_e_reduzir inter-latin    "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2"        400 600

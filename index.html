@@ -25,8 +25,8 @@
 
 <style>
 /* ─────────── fontes (self-hosted, subset latino) ─────────── */
-@font-face{font-family:'Playfair Display';src:url(assets/fonts/playfair-latin.woff2) format('woff2');font-weight:400 900;font-style:normal;font-display:swap}
-@font-face{font-family:'Inter';src:url(assets/fonts/inter-latin.woff2) format('woff2');font-weight:100 900;font-style:normal;font-display:swap}
+@font-face{font-family:'Playfair Display';src:url(assets/fonts/playfair-latin.woff2) format('woff2');font-weight:500 600;font-style:normal;font-display:swap}
+@font-face{font-family:'Inter';src:url(assets/fonts/inter-latin.woff2) format('woff2');font-weight:400 600;font-style:normal;font-display:swap}
 
 /* ─────────── tokens ─────────── */
 :root{
@@ -47,7 +47,8 @@
 
 /* ─────────── base ─────────── */
 *,*::before,*::after{box-sizing:border-box}
-html{-webkit-text-size-adjust:100%}
+/* A página é branca por identidade: não deixa o modo escuro do celular inverter nada. */
+html{-webkit-text-size-adjust:100%;color-scheme:light;background:var(--paper)}
 body{
   margin:0;
   background:var(--paper);
