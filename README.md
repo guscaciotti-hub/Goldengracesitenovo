@@ -3,6 +3,18 @@
 Página única, estática, para venda do **Kit Vitrine** no atacado.
 HTML + CSS inline, sem framework, sem build, sem backend. Só abrir `index.html`.
 
+## Links
+
+| | |
+|---|---|
+| **Site no ar** | <https://guscaciotti-hub.github.io/Goldengracesitenovo/> |
+| Repositório | <https://github.com/guscaciotti-hub/Goldengracesitenovo> |
+| Branch | [`claude/golden-grace-landing-page-6qrspf`](https://github.com/guscaciotti-hub/Goldengracesitenovo/tree/claude/golden-grace-landing-page-6qrspf) |
+| Editar a página | [`index.html`](https://github.com/guscaciotti-hub/Goldengracesitenovo/edit/claude/golden-grace-landing-page-6qrspf/index.html) |
+| Deploys | <https://github.com/guscaciotti-hub/Goldengracesitenovo/actions> |
+
+Todo push na branch republica o site sozinho, em cerca de 30 segundos.
+
 ---
 
 ## 1. O que falta preencher
@@ -76,14 +88,15 @@ Para marcar um evento novo em qualquer link, basta adicionar
 
 ## 4. Publicar
 
-O repositório já traz `vercel.json` e `netlify.toml` (cache longo nas fontes,
-cache curto nas imagens, para as fotos novas aparecerem sem esperar).
+Já está publicado no **GitHub Pages**, servindo a raiz da branch. Não precisa
+fazer nada: `.github/workflows/pages.yml` republica a cada push, em ~30 s.
+Acompanhe em [Actions](https://github.com/guscaciotti-hub/Goldengracesitenovo/actions).
 
-**Vercel:** importe o repositório. Sem framework, sem build command, output
-directory `.`.
+Para apontar um domínio próprio: *Settings → Pages → Custom domain*. Depois
+troque `PREENCHER_DOMINIO` no `index.html` pelo domínio final.
 
-**Netlify:** arraste a pasta em <https://app.netlify.com/drop>, ou conecte o
-repositório — o `netlify.toml` já configura tudo.
+Os arquivos `vercel.json` e `netlify.toml` ficam no repositório caso um dia você
+mude de hospedagem — o GitHub Pages ignora os dois.
 
 ---
 
