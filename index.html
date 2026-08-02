@@ -13,7 +13,7 @@
 <meta property="og:locale" content="pt_BR">
 <meta property="og:site_name" content="Golden &amp; Grace">
 <meta property="og:title" content="Kit Vitrine — 10 body splash por R$ 329">
-<meta property="og:description" content="Atacado para lojas e salões. Você não paga nada agora: paga na entrega. Lucro de R$ 470 por kit.">
+<meta property="og:description" content="Atacado para lojas e salões da Baixada. Você não paga nada agora: paga na entrega. Lucro de R$ 470 por kit.">
 <meta property="og:url" content="https://PREENCHER_DOMINIO/">
 <meta property="og:image" content="https://PREENCHER_DOMINIO/assets/og.png">
 <meta property="og:image:width" content="1200">
@@ -47,14 +47,11 @@
   --t-lg:1.125rem;
 
   --d-sm:clamp(1.5rem,5.6vw,2rem);
-  --d-md:clamp(2.6rem,11vw,4rem);
   --d-lg:clamp(1.6rem,7vw,2.5rem);
   --d-xl:clamp(4.5rem,24vw,9rem);
 
-  /* três larguras. A alternância entre elas é o que dá cadência à página. */
-  --w-texto:34rem;
-  --w-medio:44rem;
-  --w-largo:75rem;   /* 1200px */
+  --w-coluna:44rem;
+  --w-largo:75rem;
 
   --pad:1.25rem;
   --serif:'Playfair Display','Iowan Old Style','Times New Roman',Times,serif;
@@ -76,6 +73,7 @@ img{display:block;max-width:100%;height:auto}
 a{color:inherit}
 h1,h2,h3,p,ol,ul{margin:0}
 ol,ul{padding:0;list-style:none}
+[hidden]{display:none !important}
 :focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:2px}
 .secao--ink :focus-visible{outline-color:var(--gold)}
 
@@ -86,21 +84,17 @@ ol,ul{padding:0;list-style:none}
   }
 }
 
-/* ── Espaçamento vertical mora SÓ em .secao; largura mora SÓ em .wrap.
-      Nenhum componente interno mexe em padding-block ou max-width, para
-      as duas escalas nunca se anularem. ── */
-.wrap{width:100%;max-width:var(--w-texto);margin-inline:auto;padding-inline:var(--pad)}
-.wrap--largo{max-width:var(--w-largo)}
-/* Coluna de leitura presa à esquerda do container largo: a página inteira
-   passa a ter um eixo vertical só, em vez de blocos centralizados soltos. */
-.coluna{max-width:var(--w-medio)}
+/* ── Espaçamento vertical mora SÓ em .secao; largura mora SÓ em .wrap/.coluna.
+      Nenhum componente interno mexe nas duas, para não se anularem. ── */
+.wrap{width:100%;max-width:var(--w-largo);margin-inline:auto;padding-inline:var(--pad)}
+.coluna{max-width:var(--w-coluna)}   /* presa à esquerda: a página tem um eixo só */
 
 .secao{padding-block:3.5rem}
 .secao--mist{background:var(--mist)}
 .secao--ink{background:var(--ink);color:var(--paper)}
 @media (min-width:64rem){
   .secao{padding-block:5.5rem}
-  .secao--amplo{padding-block:8rem}   /* respiro grande no bloco da margem */
+  .secao--amplo{padding-block:8rem}
 }
 
 /* ───────────────────────── tipografia ───────────────────────── */
@@ -114,64 +108,64 @@ ol,ul{padding:0;list-style:none}
   font-family:var(--serif);font-weight:700;font-size:var(--d-sm);
   text-transform:uppercase;letter-spacing:.005em;line-height:1.14;
 }
-.lede{margin-top:.9rem;color:var(--ink-2);font-size:var(--t-lg);line-height:1.55;max-width:34rem}
+.lede{margin-top:.9rem;color:var(--ink-2);font-size:var(--t-lg);line-height:1.55;max-width:38rem}
 .lede--claro{color:var(--claro-2)}
+.legenda{margin-top:.9rem;font-size:var(--t-sm);color:var(--ink-3)}
 
 .h1,.titulo,.margem__valor,.margem__lucro,.passos__n{font-variant-numeric:lining-nums tabular-nums}
 
-/* ── logo. line-height 1 e nowrap: com .92 a caixa alta do Playfair
-      encostava no topo e a primeira linha podia ser cortada. ── */
+/* ── logo. line-height 1 e nowrap: com valor menor que 1 a caixa alta do
+      Playfair encosta no topo da linha e a primeira pode ser cortada.
+      O logotipo tipográfico é o padrão; o PNG oficial assume quando existir. ── */
 .logo{
   display:block;overflow:visible;
   font-family:var(--serif);font-weight:600;text-transform:uppercase;
   font-size:clamp(1.4rem,3.4vw,1.75rem);line-height:1;letter-spacing:.01em;
 }
 .logo span{display:block;white-space:nowrap}
-.logo .amp{display:inline;color:var(--gold)}   /* dourado 1 de 3 */
+.logo .amp{display:inline;color:var(--gold)}   /* dourado 1 de 2 */
 .logo--claro{color:var(--paper)}
+.logo__img{width:auto;max-width:13rem;height:auto}
+.rodape .logo__img{filter:invert(1) grayscale(1) brightness(2)}
 
 /* ───────────────────────── hero ───────────────────────── */
 .hero{padding-top:1.75rem}
-.hero__grid{display:grid;gap:2.75rem;align-items:center}
+.hero__grid{display:grid;gap:2rem;--h1:clamp(2.6rem,11vw,5rem)}
+/* Sem a foto real, a coluna da direita carrega a oferta — promessa, botão e
+   troca. Metade da tela vazia esperando uma imagem que não existe é pior do
+   que qualquer composição. Quando a foto entrar, a oferta volta para baixo
+   do texto e a imagem assume a direita, no 55/45 do briefing. */
 @media (min-width:64rem){
   .hero{padding-top:3.5rem}
-  .hero__grid{grid-template-columns:minmax(0,55fr) minmax(0,45fr);gap:4.5rem}
+  .hero__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4rem;align-items:start}
+  .hero__oferta{padding-top:.35rem}
+
+  .hero__grid.com-foto{grid-template-columns:minmax(0,55fr) minmax(0,45fr);gap:4.5rem;align-items:center;--h1:clamp(2.6rem,4.6vw,4rem)}
+  .hero__grid.com-foto .hero__texto{grid-column:1;grid-row:1}
+  .hero__grid.com-foto .hero__oferta{grid-column:1;grid-row:2;padding-top:0}
+  .hero__grid.com-foto .hero__foto{grid-column:2;grid-row:1 / span 2;align-self:center}
 }
 .hero__texto .logo{margin-bottom:2.25rem}
 .hero__texto .micro{margin-bottom:1.1rem}
 
 .h1{font-family:var(--serif);font-weight:700;line-height:1.02;letter-spacing:-.025em}
-.h1__l1{display:block;font-size:var(--d-md)}
+.h1__l1{display:block;font-size:var(--h1)}
 .h1__l2{display:block;font-size:var(--d-lg);margin-top:.3rem;letter-spacing:-.02em}
 .sub{margin-top:1rem;color:var(--ink-2);font-size:var(--t-base)}
 
-/* A promessa mais forte da oferta. O fio é preto, não dourado: o dourado
-   já tem seus 3 lugares, e um fio preto grosso ao lado de serifada
-   pesada lê como destaque de jornal — mais firme que o dourado aqui. */
-.promessa{margin-top:1.75rem;padding-left:1.1rem;border-left:4px solid var(--ink)}
+/* O argumento mais forte da oferta. Fio preto grosso ao lado de serifada
+   pesada: destaque de jornal, e o dourado fica reservado para o lucro. */
+.promessa{padding-left:1.1rem;border-left:4px solid var(--ink)}
 .promessa b{
   display:block;font-family:var(--serif);font-weight:700;
   font-size:clamp(1.375rem,4vw,1.625rem);line-height:1.2;letter-spacing:-.015em;
 }
 .promessa span{display:block;margin-top:.2rem;color:var(--ink-2);font-size:var(--t-base)}
 
-/* ── composição dos frascos ── */
-.hero__foto{position:relative;overflow:hidden}
-.hero__respingo{
-  position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
-  width:132%;height:auto;color:var(--gold);pointer-events:none;   /* dourado 2 de 3 */
-}
-/* As larguras somam 84% + vãos: os frascos precisam respirar entre si,
-   senão os rótulos se sobrepõem e a composição vira massa. */
-.vitrine{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:1.5%}
-.vitrine img{width:16%}
-.vitrine img:nth-child(2),.vitrine img:nth-child(4){margin-bottom:6%}
-.vitrine img:nth-child(3){width:20%;margin-bottom:12%;z-index:2}
-
 /* ───────────────────────── botão ───────────────────────── */
-/* Preto com texto branco. O verde fica só no ícone: bloco cheio de #25D366
-   briga com a paleta preto-e-dourado e faz a página parecer amadora. */
-.acao{margin-top:1.75rem}
+/* Preto com texto branco, verde só no ícone: bloco cheio de #25D366
+   briga com a paleta preto-e-dourado. */
+.acao{margin-top:1.5rem}
 .btn{
   display:inline-flex;align-items:center;justify-content:center;gap:.65rem;
   width:100%;min-height:3.5rem;padding:1rem 1.5rem;border-radius:2px;
@@ -185,9 +179,7 @@ ol,ul{padding:0;list-style:none}
 .btn svg{flex:none;color:var(--whats)}
 .secao--ink .btn{background:var(--paper);color:var(--ink)}
 .secao--ink .btn:hover{background:#ECECEC}
-@media (min-width:48rem){
-  .btn{width:auto;padding-inline:2.5rem}   /* nunca a largura toda da coluna */
-}
+@media (min-width:48rem){.btn{width:auto;padding-inline:2.5rem}}
 
 .troca{
   display:flex;align-items:flex-start;gap:.5rem;
@@ -196,15 +188,12 @@ ol,ul{padding:0;list-style:none}
 .troca svg{flex:none;margin-top:.15rem}
 .troca--claro{color:var(--claro-2)}
 
-/* ────────── margem: a peça gráfica, em largura total ────────── */
-.margem{position:relative;overflow:hidden;margin-top:2rem}
-.margem__respingo{
-  position:absolute;right:-4%;top:50%;transform:translateY(-50%);
-  width:62%;height:auto;color:var(--gold);pointer-events:none;   /* mesmo respingo, 2 de 3 */
-}
-.margem__grid{position:relative;display:grid;gap:2rem}
+/* ────────── margem: a peça gráfica ────────── */
+.margem{margin-top:2rem}
+.margem__grid{display:grid;gap:2rem}
 @media (min-width:64rem){
   .margem__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4rem;align-items:center}
+  .margem__total{border-left:1px solid var(--linha-escura);padding-left:4rem}
 }
 .margem__precos{display:flex;align-items:flex-end;gap:1rem}
 .margem__col{flex:1 1 0;min-width:0}
@@ -213,15 +202,21 @@ ol,ul{padding:0;list-style:none}
   font-size:var(--d-lg);line-height:1;letter-spacing:-.025em;white-space:nowrap;
 }
 .margem__seta{flex:none;width:1.75rem;height:.75rem;margin-bottom:.6rem;color:var(--claro-2)}
-
 .margem__lucro{
   display:block;margin-top:.2rem;font-family:var(--serif);font-weight:700;
-  font-size:var(--d-xl);line-height:.9;letter-spacing:-.04em;color:var(--gold);  /* dourado 3 de 3 */
+  font-size:var(--d-xl);line-height:.9;letter-spacing:-.04em;color:var(--gold);  /* dourado 2 de 2 */
 }
 .margem__nota{display:block;margin-top:.7rem;font-size:var(--t-xs);color:var(--claro-2)}
-@media (min-width:64rem){
-  .margem__total{border-left:1px solid var(--linha-escura);padding-left:4rem}
+
+/* ───────────── por que comprar da gente ───────────── */
+.motivos{display:grid;gap:2rem;margin-top:2.25rem}
+@media (min-width:56rem){.motivos{grid-template-columns:repeat(3,1fr);gap:2.5rem}}
+.motivo{border-top:2px solid var(--ink);padding-top:1.1rem}
+.motivo h3{
+  font-family:var(--serif);font-weight:700;font-size:1.25rem;
+  line-height:1.25;letter-spacing:-.015em;
 }
+.motivo p{margin-top:.6rem;color:var(--ink-2);font-size:var(--t-base);line-height:1.5}
 
 /* ───────────────────────── fragrâncias ───────────────────────── */
 .trilho{
@@ -231,20 +226,32 @@ ol,ul{padding:0;list-style:none}
   scrollbar-width:none;
 }
 .trilho::-webkit-scrollbar{display:none}
-.frag{flex:0 0 61%;max-width:14rem;scroll-snap-align:start}
+.frag{flex:0 0 66%;max-width:15rem;scroll-snap-align:start}
 @media (min-width:64rem){
   .trilho{display:grid;grid-template-columns:repeat(5,1fr);gap:1.75rem;overflow:visible;margin-inline:0;padding-inline:0}
   .frag{flex:none;max-width:none}
 }
-.frag__foto{
-  background:var(--mist);
-  background:color-mix(in srgb,var(--acento) 8%,#fff);
-  margin-bottom:.9rem;
-}
+.frag__foto{margin-bottom:1rem;background:var(--mist)}
 .frag__foto img{width:100%;aspect-ratio:2/3;object-fit:contain}
-.frag__nome{font-family:var(--serif);font-weight:600;font-size:1.1875rem;line-height:1.2;letter-spacing:-.012em}
-.frag__fio{display:block;width:1.75rem;height:3px;background:var(--acento);margin:.55rem 0 .6rem}
+.frag__nome{font-family:var(--serif);font-weight:600;font-size:1.25rem;line-height:1.2;letter-spacing:-.012em}
+.frag__fio{display:block;width:2rem;height:3px;background:var(--acento);margin:.6rem 0 .65rem}
 .frag__perfil{font-size:var(--t-sm);line-height:1.45;color:var(--ink-2)}
+
+/* ───────────────────────── prova ───────────────────────── */
+.prova + .prova{margin-top:3rem}
+.grade{display:grid;gap:1rem;margin-top:1.25rem}
+@media (min-width:40rem){.grade{grid-template-columns:repeat(2,1fr);gap:1.25rem}}
+@media (min-width:64rem){.grade--4{grid-template-columns:repeat(4,1fr)}.grade--3{grid-template-columns:repeat(3,1fr)}}
+.grade figure{margin:0}
+.grade img{width:100%;background:var(--paper)}
+.grade figcaption{margin-top:.5rem;font-size:var(--t-sm);color:var(--ink-3)}
+
+/* ───────────────────────── quem somos ───────────────────────── */
+.duo{display:grid;gap:1.25rem;margin-top:2rem}
+@media (min-width:48rem){.duo{grid-template-columns:repeat(2,1fr);gap:1.75rem}}
+.duo figure{margin:0}
+.duo img{width:100%;aspect-ratio:4/3;object-fit:cover}
+.duo figcaption{margin-top:.5rem;font-size:var(--t-sm);color:var(--ink-3)}
 
 /* ───────────────────────── garantia ───────────────────────── */
 .passos{margin-top:2rem;display:flex;flex-direction:column;gap:1.25rem}
@@ -253,19 +260,32 @@ ol,ul{padding:0;list-style:none}
 .passos p{font-size:var(--t-base);line-height:1.5;color:var(--ink-2)}
 
 /* ───────────────────────── entrega ───────────────────────── */
-.cidades{
-  margin-top:1.5rem;padding-top:1.25rem;border-top:1px solid var(--linha);
-  display:flex;flex-wrap:wrap;gap:.3rem .7rem;
+
+/* ───────────────────────── perguntas ───────────────────────── */
+.faq{margin-top:1.75rem}
+.faq details{border-top:1px solid var(--linha)}
+.faq details:last-of-type{border-bottom:1px solid var(--linha)}
+.faq summary{
+  position:relative;cursor:pointer;list-style:none;
+  padding:1.1rem 2.25rem 1.1rem 0;font-weight:600;font-size:var(--t-lg);
 }
-.cidades li{font-size:var(--t-sm);color:var(--ink-2)}
-.cidades li:not(:last-child)::after{content:' ·';color:var(--ink-3)}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{
+  content:'';position:absolute;right:.5rem;top:50%;width:.65rem;height:.65rem;
+  border-right:2px solid var(--ink-3);border-bottom:2px solid var(--ink-3);
+  transform:translateY(-70%) rotate(45deg);transition:transform .2s ease;
+}
+.faq details[open] summary::after{transform:translateY(-25%) rotate(-135deg)}
+.faq details p{padding-bottom:1.15rem;color:var(--ink-2);max-width:40rem}
 
 /* ───────────────────────── rodapé ───────────────────────── */
-.rodape{background:var(--ink);color:var(--claro-2);padding-block:2.5rem 6.5rem;font-size:var(--t-sm);line-height:1.7}
+.rodape{background:var(--ink);color:var(--claro-2);padding-block:2.5rem 6.5rem;font-size:var(--t-sm);line-height:1.75}
 .rodape .logo{margin-bottom:1.25rem}
 .rodape p + p{margin-top:.25rem}
+.rodape b{color:var(--paper);font-weight:600}
+.rodape hr{border:0;border-top:1px solid var(--linha-escura);margin:1.4rem 0}
 
-/* ── botão flutuante: discreto, e só depois que o hero sai da tela ── */
+/* ── flutuante: discreto, e só depois que o hero sai da tela ── */
 .flutuante{
   position:fixed;right:1.25rem;z-index:60;
   bottom:calc(1.25rem + env(safe-area-inset-bottom,0px));
@@ -299,13 +319,16 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 
 <body>
 
-<!-- ═════════════════════ HERO ═════════════════════ -->
+<!-- ══════════════ 1. HERO ══════════════ -->
 <header class="secao hero">
-  <div class="wrap wrap--largo">
-    <div class="hero__grid">
+  <div class="wrap">
+    <div class="hero__grid" data-hero>
 
       <div class="hero__texto">
-        <p class="logo" aria-label="Golden e Grace"><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></p>
+        <p class="logo" aria-label="Golden e Grace">
+          <img class="logo__img" data-src="assets/logo.png" alt="Golden &amp; Grace" data-logo hidden>
+          <span data-logo-texto><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></span>
+        </p>
 
         <p class="micro">Atacado · para lojas e salões</p>
 
@@ -316,6 +339,9 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 
         <p class="sub">Body splash 200 ml · as 5 fragrâncias · tester incluso</p>
 
+      </div>
+
+      <div class="hero__oferta">
         <p class="promessa">
           <b>Você não paga nada agora.</b>
           <span>Paga na entrega, na sua loja.</span>
@@ -331,60 +357,26 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 
         <p class="troca">
           <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M2.8 10.4 7.4 15 17.2 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-          Não vendeu em 45 dias? A gente troca.
+          O que não vender em 45 dias, a gente troca.
         </p>
       </div>
 
-      <!-- No mobile esta coluna cai abaixo do botão: o produto importa, mas
-           não pode empurrar o CTA para fora da primeira tela. -->
-      <div class="hero__foto">
-        <svg class="hero__respingo" viewBox="0 0 520 420" aria-hidden="true" focusable="false">
-          <g fill="none" stroke="currentColor" stroke-linecap="round">
-            <path d="M20 372 C130 344 250 272 330 168 C378 106 414 54 442 6" stroke-width="54" opacity="0.17"/>
-            <path d="M64 414 C186 388 300 316 372 216 C412 160 444 108 468 62" stroke-width="26" opacity="0.13"/>
-            <path d="M158 418 C264 396 358 336 424 254" stroke-width="13" opacity="0.10"/>
-          </g>
-          <g fill="currentColor">
-            <circle cx="452" cy="30" r="11" opacity="0.13"/>
-            <circle cx="486" cy="78" r="7" opacity="0.10"/>
-            <circle cx="426" cy="92" r="5" opacity="0.09"/>
-            <circle cx="492" cy="146" r="8" opacity="0.10"/>
-            <circle cx="404" cy="46" r="4.5" opacity="0.08"/>
-          </g>
-        </svg>
-        <div class="vitrine" role="img" aria-label="Os cinco body splash da linha: Sweet Reign, Royal Bloom, Midnight Grace, Azure Mist e Golden Aura">
-          <img src="assets/rotulo-azure-mist.svg" width="160" height="556" decoding="async" alt="">
-          <img src="assets/rotulo-royal-bloom.svg" width="160" height="556" decoding="async" alt="">
-          <img src="assets/rotulo-golden-aura.svg" width="160" height="556" decoding="async" alt="">
-          <img src="assets/rotulo-sweet-reign.svg" width="160" height="556" decoding="async" alt="">
-          <img src="assets/rotulo-midnight-grace.svg" width="160" height="556" decoding="async" alt="">
-        </div>
+      <!-- Aparece quando assets/hero-composicao.webp existir. Sem foto real,
+           o hero não abre a segunda coluna: metade da tela vazia é pior. -->
+      <div class="hero__foto" data-requer-imagem hidden>
+        <img data-src="assets/hero-composicao.webp" width="1000" height="750" decoding="async"
+             alt="Os cinco body splash da linha Golden &amp; Grace">
       </div>
 
     </div>
   </div>
 </header>
 
-<!-- ═════════════════════ MARGEM ═════════════════════ -->
+<!-- ══════════════ 2. MARGEM ══════════════ -->
 <section class="secao secao--ink secao--amplo" aria-labelledby="t-margem">
-  <div class="wrap wrap--largo">
+  <div class="wrap">
     <h2 class="titulo" id="t-margem">Sua margem</h2>
-
     <div class="margem">
-      <svg class="margem__respingo" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
-        <g fill="none" stroke="currentColor" stroke-linecap="round">
-          <path d="M-20 268 C70 246 150 192 208 118 C246 70 276 34 306 2" stroke-width="42" opacity="0.16"/>
-          <path d="M4 300 C96 280 182 224 244 148 C278 106 302 68 320 34" stroke-width="20" opacity="0.12"/>
-          <path d="M74 300 C154 284 226 236 282 172" stroke-width="10" opacity="0.09"/>
-        </g>
-        <g fill="currentColor">
-          <circle cx="330" cy="24" r="8" opacity="0.15"/>
-          <circle cx="352" cy="58" r="5" opacity="0.11"/>
-          <circle cx="312" cy="70" r="4" opacity="0.10"/>
-          <circle cx="358" cy="112" r="6.5" opacity="0.11"/>
-        </g>
-      </svg>
-
       <div class="margem__grid">
         <div class="margem__precos">
           <div class="margem__col">
@@ -397,7 +389,6 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
             <span class="margem__valor">R$ 79,90</span>
           </div>
         </div>
-
         <div class="margem__total">
           <span class="micro micro--claro">Lucro por kit</span>
           <strong class="margem__lucro">R$ 470</strong>
@@ -408,44 +399,75 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
   </div>
 </section>
 
-<!-- ═════════════════════ FRAGRÂNCIAS ═════════════════════ -->
-<section class="secao" aria-labelledby="t-frag">
-  <div class="wrap wrap--largo">
+<!-- ══════════════ 3. POR QUE COMPRAR DA GENTE ══════════════ -->
+<section class="secao" aria-labelledby="t-porque">
+  <div class="wrap">
+    <h2 class="titulo coluna" id="t-porque">Estoque na Baixada. Quem entrega somos nós.</h2>
+    <div class="motivos">
+      <div class="motivo">
+        <h3>Não espera caixa de São Paulo.</h3>
+        <p>Estoque próprio em São Vicente. Acabou hoje, você repõe amanhã.</p>
+      </div>
+      <div class="motivo">
+        <h3>Não paga adiantado.</h3>
+        <p>Você paga na entrega, com o produto na mão, Pix ou cartão.</p>
+      </div>
+      <div class="motivo">
+        <h3>Não fica com encalhe.</h3>
+        <p>O que não vender em 45 dias, a gente troca por outra fragrância.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 4. AS 5 FRAGRÂNCIAS ══════════════ -->
+<section class="secao secao--mist" aria-labelledby="t-frag">
+  <div class="wrap">
     <h2 class="titulo" id="t-frag">As 5 fragrâncias</h2>
     <p class="lede">Todas 200 ml · desodorante corporal.</p>
 
     <div class="trilho" tabindex="0" role="group" aria-label="As 5 fragrâncias da linha">
 
       <article class="frag" style="--acento:#C4796B">
-        <div class="frag__foto"><img src="assets/rotulo-sweet-reign.svg" width="160" height="556" loading="lazy" decoding="async" alt="Frasco de body splash Sweet Reign, 200 ml"></div>
+        <div class="frag__foto" data-requer-imagem hidden>
+          <img data-src="assets/frascos/sweet-reign.webp" width="600" height="900" loading="lazy" decoding="async" alt="Frasco de body splash Sweet Reign, 200 ml">
+        </div>
         <h3 class="frag__nome">Sweet Reign</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral oriental — limão, vanilla e musk.</p>
       </article>
 
       <article class="frag" style="--acento:#C22B5E">
-        <div class="frag__foto"><img src="assets/rotulo-royal-bloom.svg" width="160" height="556" loading="lazy" decoding="async" alt="Frasco de body splash Royal Bloom, 200 ml"></div>
+        <div class="frag__foto" data-requer-imagem hidden>
+          <img data-src="assets/frascos/royal-bloom.webp" width="600" height="900" loading="lazy" decoding="async" alt="Frasco de body splash Royal Bloom, 200 ml">
+        </div>
         <h3 class="frag__nome">Royal Bloom</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral amadeirado — bergamota e âmbar.</p>
       </article>
 
       <article class="frag" style="--acento:#1B4E9B">
-        <div class="frag__foto"><img src="assets/rotulo-midnight-grace.svg" width="160" height="556" loading="lazy" decoding="async" alt="Frasco de body splash Midnight Grace, 200 ml"></div>
+        <div class="frag__foto" data-requer-imagem hidden>
+          <img data-src="assets/frascos/midnight-grace.webp" width="600" height="900" loading="lazy" decoding="async" alt="Frasco de body splash Midnight Grace, 200 ml">
+        </div>
         <h3 class="frag__nome">Midnight Grace</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral oriental — sândalo, jasmim e baunilha.</p>
       </article>
 
       <article class="frag" style="--acento:#1B8FD1">
-        <div class="frag__foto"><img src="assets/rotulo-azure-mist.svg" width="160" height="556" loading="lazy" decoding="async" alt="Frasco de body splash Azure Mist, 200 ml"></div>
+        <div class="frag__foto" data-requer-imagem hidden>
+          <img data-src="assets/frascos/azure-mist.webp" width="600" height="900" loading="lazy" decoding="async" alt="Frasco de body splash Azure Mist, 200 ml">
+        </div>
         <h3 class="frag__nome">Azure Mist</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral oriental musk — maçã e ambergris.</p>
       </article>
 
       <article class="frag" style="--acento:#C89B5F">
-        <div class="frag__foto"><img src="assets/rotulo-golden-aura.svg" width="160" height="556" loading="lazy" decoding="async" alt="Frasco de body splash Golden Aura, 200 ml"></div>
+        <div class="frag__foto" data-requer-imagem hidden>
+          <img data-src="assets/frascos/golden-aura.webp" width="600" height="900" loading="lazy" decoding="async" alt="Frasco de body splash Golden Aura, 200 ml">
+        </div>
         <h3 class="frag__nome">Golden Aura</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral frutado — pera, ameixa, baunilha e amora.</p>
@@ -455,9 +477,56 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
   </div>
 </section>
 
-<!-- ═════════════════════ GARANTIA ═════════════════════ -->
+<!-- ══════════════ 5. PROVA ══════════════
+     Cada bloco só aparece quando os arquivos existirem. Moldura vazia numa
+     página cujo trabalho é provar que a empresa existe faz o efeito contrário. -->
+<section class="secao secao--mist" aria-labelledby="t-prova" data-requer-imagem hidden>
+  <div class="wrap">
+    <h2 class="titulo" id="t-prova">Quem já comprou, revende.</h2>
+
+    <div class="prova" data-requer-imagem hidden>
+      <p class="legenda">Avaliações de clientes finais na nossa loja online.</p>
+      <div class="grade grade--4">
+        <figure><img data-src="assets/prova/avaliacao-01.webp" width="500" height="500" loading="lazy" decoding="async" alt="Avaliação de cliente final"></figure>
+        <figure><img data-src="assets/prova/avaliacao-02.webp" width="500" height="500" loading="lazy" decoding="async" alt="Avaliação de cliente final"></figure>
+        <figure><img data-src="assets/prova/avaliacao-03.webp" width="500" height="500" loading="lazy" decoding="async" alt="Avaliação de cliente final"></figure>
+        <figure><img data-src="assets/prova/avaliacao-04.webp" width="500" height="500" loading="lazy" decoding="async" alt="Avaliação de cliente final"></figure>
+      </div>
+    </div>
+
+    <div class="prova" data-requer-imagem hidden>
+      <p class="legenda">Já está no balcão.</p>
+      <div class="grade grade--3">
+        <!-- Troque a legenda pelo nome real do estabelecimento. -->
+        <figure><img data-src="assets/prova/loja-01.webp" width="800" height="600" loading="lazy" decoding="async" alt="Kit Vitrine exposto no balcão de uma loja"><figcaption>PREENCHER_LOJA_1</figcaption></figure>
+        <figure><img data-src="assets/prova/loja-02.webp" width="800" height="600" loading="lazy" decoding="async" alt="Kit Vitrine exposto no balcão de uma loja"><figcaption>PREENCHER_LOJA_2</figcaption></figure>
+        <figure><img data-src="assets/prova/loja-03.webp" width="800" height="600" loading="lazy" decoding="async" alt="Kit Vitrine exposto no balcão de uma loja"><figcaption>PREENCHER_LOJA_3</figcaption></figure>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 6. QUEM SOMOS ══════════════ -->
+<section class="secao" aria-labelledby="t-quem" data-requer-imagem hidden>
+  <div class="wrap">
+    <div class="coluna">
+      <h2 class="titulo" id="t-quem">A gente entrega pessoalmente.</h2>
+      <!-- Quando tiver os nomes, troque a primeira frase por:
+           "Somos NOME_1 e NOME_2. Nosso estoque fica em São Vicente e quem
+            leva o pedido na sua loja somos nós." -->
+      <p class="lede">Nosso estoque fica em São Vicente e quem leva o pedido na sua loja somos nós.</p>
+      <p class="lede">Se precisar repor, você fala com a gente direto — sem central de atendimento.</p>
+    </div>
+    <div class="duo">
+      <figure><img data-src="assets/socios.webp" width="1000" height="750" loading="lazy" decoding="async" alt="Os sócios da Golden &amp; Grace"></figure>
+      <figure><img data-src="assets/estoque.webp" width="1000" height="750" loading="lazy" decoding="async" alt="O estoque em São Vicente"></figure>
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════ 7. GARANTIA ══════════════ -->
 <section class="secao secao--mist" aria-labelledby="t-garantia">
-  <div class="wrap wrap--largo"><div class="coluna">
+  <div class="wrap"><div class="coluna">
     <h2 class="titulo" id="t-garantia">Como funciona a garantia</h2>
     <ol class="passos">
       <li><span class="passos__n" aria-hidden="true">01</span><p>Você recebe o kit e expõe. O tester fica aberto no balcão.</p></li>
@@ -467,23 +536,52 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
   </div></div>
 </section>
 
-<!-- ═════════════════════ ENTREGA ═════════════════════ -->
+<!-- ══════════════ 8. ENTREGA ══════════════ -->
 <section class="secao" aria-labelledby="t-entrega">
-  <div class="wrap wrap--largo"><div class="coluna">
-    <h2 class="titulo" id="t-entrega">Entrega em até 24h</h2>
-    <p class="lede">Estoque próprio em São Vicente. Acabou hoje, você repõe amanhã.</p>
-    <ul class="cidades">
-      <li>Santos</li>
-      <li>São Vicente</li>
-      <li>Praia Grande</li>
-      <li>Cubatão</li>
-    </ul>
+  <div class="wrap"><div class="coluna">
+    <h2 class="titulo" id="t-entrega">Estoque em São Vicente</h2>
+    <p class="lede">Entrega em até 24h em Santos, São Vicente, Praia Grande e Cubatão. Acabou hoje, você repõe amanhã.</p>
   </div></div>
 </section>
 
-<!-- ═════════════════════ CTA FINAL ═════════════════════ -->
+<!-- ══════════════ 9. PERGUNTAS DIRETAS ══════════════ -->
+<section class="secao secao--mist" aria-labelledby="t-faq">
+  <div class="wrap"><div class="coluna">
+    <h2 class="titulo" id="t-faq">Perguntas diretas</h2>
+    <div class="faq">
+      <!-- ▼ Falta a política de CNPJ. Descomente e responda:
+      <details>
+        <summary>Preciso ter CNPJ?</summary>
+        <p>PREENCHER_RESPOSTA_CNPJ</p>
+      </details>
+      -->
+      <details>
+        <summary>Posso escolher as fragrâncias?</summary>
+        <p>Sim. Você monta o kit de 10 como quiser entre as 5.</p>
+      </details>
+      <details>
+        <summary>Quando eu pago?</summary>
+        <p>Na entrega, com o produto na sua mão. Pix ou cartão.</p>
+      </details>
+      <details>
+        <summary>E se não vender?</summary>
+        <p>Em 45 dias você avisa e a gente troca o que sobrou por outra fragrância.</p>
+      </details>
+      <details>
+        <summary>Dá pra comprar mais de 10?</summary>
+        <p>Dá. Fale com a gente que passamos a condição.</p>
+      </details>
+      <details>
+        <summary>Quanto tempo pra chegar?</summary>
+        <p>Até 24h em Santos, São Vicente, Praia Grande e Cubatão.</p>
+      </details>
+    </div>
+  </div></div>
+</section>
+
+<!-- ══════════════ 10. CTA FINAL ══════════════ -->
 <section class="secao secao--ink" aria-labelledby="t-fecho">
-  <div class="wrap wrap--largo"><div class="coluna">
+  <div class="wrap"><div class="coluna">
     <h2 class="titulo" id="t-fecho">Kit Vitrine — R$ 329</h2>
     <p class="lede lede--claro">10 unidades, as 5 fragrâncias, tester incluso. Você não paga nada agora: paga na entrega, na sua loja.</p>
 
@@ -496,28 +594,33 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 
     <p class="troca troca--claro">
       <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M2.8 10.4 7.4 15 17.2 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      Não vendeu em 45 dias? A gente troca.
+      O que não vender em 45 dias, a gente troca.
     </p>
   </div></div>
 </section>
 
-<!-- ═════════════════════ RODAPÉ ═════════════════════ -->
+<!-- ══════════════ 11. RODAPÉ ══════════════ -->
 <footer class="rodape">
-  <div class="wrap wrap--largo">
-    <p class="logo logo--claro" aria-label="Golden e Grace"><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></p>
+  <div class="wrap">
+    <p class="logo logo--claro" aria-label="Golden e Grace">
+      <img class="logo__img" data-src="assets/logo.png" alt="Golden &amp; Grace" data-logo hidden>
+      <span data-logo-texto><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></span>
+    </p>
 
-    <!-- ▼▼▼ DADOS LEGAIS — DESCOMENTE E PREENCHA ANTES DE RODAR TRÁFEGO ▼▼▼
-         Comentado de propósito: rodapé com "PREENCHER" visível destrói a
-         confiança do lojista que a página quer convencer.
+    <!-- ▼▼▼ ESTE BLOCO É O PRINCIPAL ELEMENTO DE CREDIBILIDADE DA PÁGINA.
+             DESCOMENTE E PREENCHA ANTES DE RODAR QUALQUER TRÁFEGO.
+             Está comentado porque rodapé com "PREENCHER" à mostra prova o
+             contrário do que a página inteira tenta provar.
 
-    <p><b>RAZÃO SOCIAL</b></p>
+    <p><b>RAZÃO SOCIAL LTDA</b></p>
     <p>CNPJ 00.000.000/0001-00</p>
-    <p>Endereço — São Vicente/SP</p>
-    <p>Atendimento com NOME, de segunda a sexta.</p>
-    <p>Pagamento na entrega, em dinheiro, Pix ou cartão.</p>
-    ▲▲▲ FIM DOS DADOS LEGAIS ▲▲▲ -->
+    <p>Rua, número, bairro — São Vicente/SP</p>
+    <hr>
+    <p>Atendimento com <b>NOME DO RESPONSÁVEL</b>, de segunda a sexta.</p>
+    <p>Pagamento na entrega: dinheiro, Pix ou cartão em até 3x.</p>
+    ▲▲▲ FIM ▲▲▲ -->
 
-    <p>Venda exclusiva no atacado, mediante CNPJ.</p>
+    <p>Venda no atacado.</p>
     <p>Baixada Santista · estoque próprio em São Vicente.</p>
   </div>
 </footer>
@@ -533,7 +636,68 @@ document.addEventListener('click', function (e) {
   if (alvo && typeof fbq === 'function') fbq('track', alvo.dataset.evento);
 }, true);
 
-// O flutuante só aparece depois que o hero sai da tela — enquanto o botão
+// ── Blocos que dependem de foto real ──
+// A sonda testa o arquivo fora do DOM. Não dá para escutar o erro da própria
+// tag: imagem com loading="lazy" dentro de bloco display:none nunca carrega,
+// e o bloco ficaria escondido para sempre mesmo com a foto no lugar.
+(function () {
+  function sondar(url) {
+    return new Promise(function (resolve) {
+      var teste = new Image();
+      teste.onload = function () { resolve(true); };
+      teste.onerror = function () { resolve(false); };
+      teste.src = url;
+    });
+  }
+
+  function ligar(bloco) {
+    bloco.hidden = false;
+    bloco.querySelectorAll('img[data-src]').forEach(function (img) {
+      img.addEventListener('error', function () {
+        var fig = img.closest('figure');
+        if (fig && fig.parentNode.children.length > 1) fig.remove();
+      });
+      img.src = img.dataset.src;
+    });
+    if (bloco.classList.contains('hero__foto')) {
+      var grid = document.querySelector('[data-hero]');
+      if (grid) grid.classList.add('com-foto');
+    }
+  }
+
+  var blocos = [].slice.call(document.querySelectorAll('[data-requer-imagem]'));
+  Promise.all(blocos.map(function (bloco) {
+    var img = bloco.querySelector('img[data-src]');
+    return img ? sondar(img.dataset.src) : Promise.resolve(false);
+  })).then(function (achou) {
+    blocos.forEach(function (bloco, i) { if (achou[i]) ligar(bloco); });
+    // Uma seção que contém blocos também aparece se algum filho apareceu.
+    blocos.forEach(function (bloco) {
+      if (bloco.hidden && bloco.querySelector('[data-requer-imagem]:not([hidden])')) ligar(bloco);
+    });
+  });
+
+  // Rede de segurança: legenda não preenchida some em vez de exibir o token.
+  document.querySelectorAll('figcaption').forEach(function (el) {
+    if (el.textContent.indexOf('PREENCHER_') !== -1) el.remove();
+  });
+
+  // Logo oficial assume o lugar do logotipo tipográfico quando existir.
+  var logos = [].slice.call(document.querySelectorAll('[data-logo]'));
+  if (logos.length) {
+    sondar(logos[0].dataset.src).then(function (existe) {
+      if (!existe) return;
+      logos.forEach(function (img) {
+        img.src = img.dataset.src;
+        img.hidden = false;
+        var texto = img.parentNode.querySelector('[data-logo-texto]');
+        if (texto) texto.hidden = true;
+      });
+    });
+  }
+})();
+
+// O flutuante só aparece depois que o hero sai da tela: enquanto o botão
 // principal está à vista, dois CTAs competiriam pela mesma decisão.
 (function () {
   var hero = document.querySelector('.hero');
