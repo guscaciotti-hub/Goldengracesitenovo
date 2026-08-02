@@ -55,11 +55,12 @@ def main() -> None:
         ctx.close()
 
         # ── desktop 1280 ──
-        ctx = navegador.new_context(viewport={"width": 1280, "height": 900})
+        ctx = navegador.new_context(viewport={"width": 1440, "height": 900})
         pagina = ctx.new_page()
         pagina.goto(url, wait_until="networkidle")
         pagina.evaluate("document.querySelector('.aviso-dev')?.remove()")
         pagina.wait_for_timeout(400)
+        pagina.screenshot(path=SAIDA / "desktop-dobra.png")
         pagina.screenshot(path=SAIDA / "desktop-inteira.png", full_page=True)
         ctx.close()
 

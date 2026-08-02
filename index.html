@@ -24,42 +24,43 @@
 <link rel="preload" href="assets/fonts/plex-latin.woff2" as="font" type="font/woff2" crossorigin>
 
 <style>
-/* ── fontes: self-hosted, subset latino, só a faixa de peso usada ── */
 @font-face{font-family:'Playfair Display';src:url(assets/fonts/playfair-latin.woff2) format('woff2');font-weight:600 700;font-style:normal;font-display:swap}
 @font-face{font-family:'IBM Plex Sans';src:url(assets/fonts/plex-latin.woff2) format('woff2');font-weight:400 600;font-style:normal;font-display:swap}
 
 /* ───────────────────────── tokens ───────────────────────── */
 :root{
   --ink:#111111;
-  --ink-2:#4A4A4A;      /* texto de apoio sobre claro — 8,9:1 */
-  --ink-3:#6B6B6B;      /* micro-rótulos sobre claro — 5,3:1 */
-  --gold:#C89B5F;       /* só 3 usos na página inteira */
-  --gold-deep:#8C6224;  /* o mesmo dourado fechado, quando precisa passar AA sobre claro */
+  --ink-2:#4A4A4A;
+  --ink-3:#6B6B6B;
+  --gold:#C89B5F;
   --paper:#FFFFFF;
   --mist:#F4F4F4;
   --linha:#E3E3E3;
   --linha-escura:#2C2C2C;
-  --claro-2:#C9C9C9;    /* texto de apoio sobre preto — 11,4:1 */
+  --claro-2:#C9C9C9;
   --whats:#25D366;
 
-  /* corpo */
   --t-micro:.6875rem;
   --t-xs:.75rem;
   --t-sm:.875rem;
   --t-base:1rem;
   --t-lg:1.125rem;
 
-  /* display — salto grande em relação ao corpo, senão a página vira uniforme */
-  --d-sm:clamp(1.5rem,5.6vw,1.875rem);
-  --d-md:clamp(2.6rem,11vw,3.6rem);
-  --d-lg:clamp(1.6rem,7vw,2.25rem);
-  --d-xl:clamp(4.5rem,24vw,7.5rem);
+  --d-sm:clamp(1.5rem,5.6vw,2rem);
+  --d-md:clamp(2.6rem,11vw,4rem);
+  --d-lg:clamp(1.6rem,7vw,2.5rem);
+  --d-xl:clamp(4.5rem,24vw,9rem);
 
-  --wrap:34rem;
+  /* três larguras. A alternância entre elas é o que dá cadência à página. */
+  --w-texto:34rem;
+  --w-medio:44rem;
+  --w-largo:75rem;   /* 1200px */
+
   --pad:1.25rem;
   --serif:'Playfair Display','Iowan Old Style','Times New Roman',Times,serif;
   --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
 }
+@media (min-width:48rem){:root{--pad:2.5rem}}
 
 /* ───────────────────────── base ───────────────────────── */
 *,*::before,*::after{box-sizing:border-box}
@@ -75,7 +76,8 @@ img{display:block;max-width:100%;height:auto}
 a{color:inherit}
 h1,h2,h3,p,ol,ul{margin:0}
 ol,ul{padding:0;list-style:none}
-:focus-visible{outline:3px solid var(--gold-deep);outline-offset:3px;border-radius:2px}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:2px}
+.secao--ink :focus-visible{outline-color:var(--gold)}
 
 @media (prefers-reduced-motion: reduce){
   *,*::before,*::after{
@@ -84,14 +86,22 @@ ol,ul{padding:0;list-style:none}
   }
 }
 
-/* ── layout. Espaçamento vertical mora só em .secao; nenhum bloco
-      interno mexe em padding-block, para não brigar por especificidade. ── */
-.wrap{width:100%;max-width:var(--wrap);margin-inline:auto;padding-inline:var(--pad)}
-.wrap--largo{max-width:70rem}
+/* ── Espaçamento vertical mora SÓ em .secao; largura mora SÓ em .wrap.
+      Nenhum componente interno mexe em padding-block ou max-width, para
+      as duas escalas nunca se anularem. ── */
+.wrap{width:100%;max-width:var(--w-texto);margin-inline:auto;padding-inline:var(--pad)}
+.wrap--largo{max-width:var(--w-largo)}
+/* Coluna de leitura presa à esquerda do container largo: a página inteira
+   passa a ter um eixo vertical só, em vez de blocos centralizados soltos. */
+.coluna{max-width:var(--w-medio)}
+
 .secao{padding-block:3.5rem}
 .secao--mist{background:var(--mist)}
 .secao--ink{background:var(--ink);color:var(--paper)}
-@media (min-width:48rem){.secao{padding-block:5rem}}
+@media (min-width:64rem){
+  .secao{padding-block:5.5rem}
+  .secao--amplo{padding-block:8rem}   /* respiro grande no bloco da margem */
+}
 
 /* ───────────────────────── tipografia ───────────────────────── */
 .micro{
@@ -102,111 +112,130 @@ ol,ul{padding:0;list-style:none}
 
 .titulo{
   font-family:var(--serif);font-weight:700;font-size:var(--d-sm);
-  text-transform:uppercase;letter-spacing:.005em;line-height:1.12;
+  text-transform:uppercase;letter-spacing:.005em;line-height:1.14;
 }
-.titulo + .lede{margin-top:.9rem}
-
-.lede{color:var(--ink-2);font-size:var(--t-lg);line-height:1.55;max-width:30rem}
+.lede{margin-top:.9rem;color:var(--ink-2);font-size:var(--t-lg);line-height:1.55;max-width:34rem}
 .lede--claro{color:var(--claro-2)}
 
-/* algarismos alinhados e tabulares: Playfair vem com os antigos por padrão,
-   e num preço o 3 e o 9 descendo da linha de base atrasam a leitura */
 .h1,.titulo,.margem__valor,.margem__lucro,.passos__n{font-variant-numeric:lining-nums tabular-nums}
 
-/* ───────────────────────── logo ───────────────────────── */
+/* ── logo. line-height 1 e nowrap: com .92 a caixa alta do Playfair
+      encostava no topo e a primeira linha podia ser cortada. ── */
 .logo{
+  display:block;overflow:visible;
   font-family:var(--serif);font-weight:600;text-transform:uppercase;
-  font-size:1.5rem;line-height:.92;letter-spacing:.01em;
+  font-size:clamp(1.4rem,3.4vw,1.75rem);line-height:1;letter-spacing:.01em;
 }
-.logo span{display:block}
-.logo .amp{display:inline;color:var(--gold)}   /* uso 1 de 3 do dourado */
+.logo span{display:block;white-space:nowrap}
+.logo .amp{display:inline;color:var(--gold)}   /* dourado 1 de 3 */
 .logo--claro{color:var(--paper)}
 
 /* ───────────────────────── hero ───────────────────────── */
-.hero{padding-top:1.75rem;padding-bottom:3rem}
-.hero .logo{margin-bottom:2rem}
-.hero .micro{margin-bottom:1.1rem}
+.hero{padding-top:1.75rem}
+.hero__grid{display:grid;gap:2.75rem;align-items:center}
+@media (min-width:64rem){
+  .hero{padding-top:3.5rem}
+  .hero__grid{grid-template-columns:minmax(0,55fr) minmax(0,45fr);gap:4.5rem}
+}
+.hero__texto .logo{margin-bottom:2.25rem}
+.hero__texto .micro{margin-bottom:1.1rem}
 
 .h1{font-family:var(--serif);font-weight:700;line-height:1.02;letter-spacing:-.025em}
 .h1__l1{display:block;font-size:var(--d-md)}
 .h1__l2{display:block;font-size:var(--d-lg);margin-top:.3rem;letter-spacing:-.02em}
-
 .sub{margin-top:1rem;color:var(--ink-2);font-size:var(--t-base)}
 
-/* a promessa mais forte da oferta: fio dourado + display. Uso 2 de 3 do dourado. */
-.promessa{
-  margin-top:1.6rem;padding-left:1rem;border-left:4px solid var(--gold);
-}
+/* A promessa mais forte da oferta. O fio é preto, não dourado: o dourado
+   já tem seus 3 lugares, e um fio preto grosso ao lado de serifada
+   pesada lê como destaque de jornal — mais firme que o dourado aqui. */
+.promessa{margin-top:1.75rem;padding-left:1.1rem;border-left:4px solid var(--ink)}
 .promessa b{
   display:block;font-family:var(--serif);font-weight:700;
-  font-size:1.375rem;line-height:1.2;letter-spacing:-.015em;
+  font-size:clamp(1.375rem,4vw,1.625rem);line-height:1.2;letter-spacing:-.015em;
 }
 .promessa span{display:block;margin-top:.2rem;color:var(--ink-2);font-size:var(--t-base)}
 
-/* ───────────────────────── botão ───────────────────────── */
-.acao{display:block;margin-top:1.6rem}
+/* ── composição dos frascos ── */
+.hero__foto{position:relative;overflow:hidden}
+.hero__respingo{
+  position:absolute;left:50%;top:58%;transform:translate(-50%,-50%);
+  width:132%;height:auto;color:var(--gold);pointer-events:none;   /* dourado 2 de 3 */
+}
+/* As larguras somam 84% + vãos: os frascos precisam respirar entre si,
+   senão os rótulos se sobrepõem e a composição vira massa. */
+.vitrine{position:relative;display:flex;align-items:flex-end;justify-content:center;gap:1.5%}
+.vitrine img{width:16%}
+.vitrine img:nth-child(2),.vitrine img:nth-child(4){margin-bottom:6%}
+.vitrine img:nth-child(3){width:20%;margin-bottom:12%;z-index:2}
 
-/* preto sobre #25D366 dá 9,5:1. Branco daria 2:1 e some no sol. */
+/* ───────────────────────── botão ───────────────────────── */
+/* Preto com texto branco. O verde fica só no ícone: bloco cheio de #25D366
+   briga com a paleta preto-e-dourado e faz a página parecer amadora. */
+.acao{margin-top:1.75rem}
 .btn{
-  display:flex;align-items:center;justify-content:center;gap:.6rem;
-  min-height:3.5rem;padding:.95rem 1.25rem;border-radius:2px;
-  background:var(--whats);color:var(--ink);
-  font-family:var(--sans);font-size:var(--t-lg);font-weight:600;letter-spacing:.005em;
+  display:inline-flex;align-items:center;justify-content:center;gap:.65rem;
+  width:100%;min-height:3.5rem;padding:1rem 1.5rem;border-radius:2px;
+  background:var(--ink);color:var(--paper);
+  font-family:var(--sans);font-size:var(--t-lg);font-weight:600;
   text-decoration:none;text-align:center;
   transition:background-color .16s ease,transform .16s ease;
 }
-.btn:hover{background:#1FBE5A}
+.btn:hover{background:#000}
 .btn:active{transform:translateY(1px)}
-.btn svg{flex:none}
+.btn svg{flex:none;color:var(--whats)}
+.secao--ink .btn{background:var(--paper);color:var(--ink)}
+.secao--ink .btn:hover{background:#ECECEC}
+@media (min-width:48rem){
+  .btn{width:auto;padding-inline:2.5rem}   /* nunca a largura toda da coluna */
+}
 
 .troca{
   display:flex;align-items:flex-start;gap:.5rem;
-  margin-top:1rem;font-size:var(--t-sm);line-height:1.45;color:var(--ink-3);
+  margin-top:1.1rem;font-size:var(--t-sm);line-height:1.45;color:var(--ink-3);
 }
 .troca svg{flex:none;margin-top:.15rem}
 .troca--claro{color:var(--claro-2)}
 
-/* ───────────── margem: a peça gráfica da página ───────────── */
-.margem{position:relative;overflow:hidden;margin-top:1.5rem;background:var(--ink);color:var(--paper)}
-
-/* uso 3 de 3 do dourado: o respingo da marca virando o chão do bloco */
+/* ────────── margem: a peça gráfica, em largura total ────────── */
+.margem{position:relative;overflow:hidden;margin-top:2rem}
 .margem__respingo{
-  position:absolute;inset:0;width:100%;height:100%;
-  pointer-events:none;color:var(--gold);
+  position:absolute;right:-4%;top:50%;transform:translateY(-50%);
+  width:62%;height:auto;color:var(--gold);pointer-events:none;   /* mesmo respingo, 2 de 3 */
 }
-
-.margem__linhas,.margem__total{position:relative;padding:1.5rem 1.25rem}
-.margem__linhas{
-  display:flex;align-items:flex-end;gap:.75rem;
-  border-bottom:1px solid var(--linha-escura);
+.margem__grid{position:relative;display:grid;gap:2rem}
+@media (min-width:64rem){
+  .margem__grid{grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:4rem;align-items:center}
 }
+.margem__precos{display:flex;align-items:flex-end;gap:1rem}
 .margem__col{flex:1 1 0;min-width:0}
 .margem__valor{
-  display:block;margin-top:.35rem;font-family:var(--serif);font-weight:600;
+  display:block;margin-top:.4rem;font-family:var(--serif);font-weight:600;
   font-size:var(--d-lg);line-height:1;letter-spacing:-.025em;white-space:nowrap;
 }
-.margem__seta{flex:none;width:1.75rem;height:.75rem;margin-bottom:.55rem;color:var(--claro-2)}
+.margem__seta{flex:none;width:1.75rem;height:.75rem;margin-bottom:.6rem;color:var(--claro-2)}
 
 .margem__lucro{
-  display:block;margin-top:.15rem;font-family:var(--serif);font-weight:700;
-  font-size:var(--d-xl);line-height:.92;letter-spacing:-.04em;color:var(--gold);
+  display:block;margin-top:.2rem;font-family:var(--serif);font-weight:700;
+  font-size:var(--d-xl);line-height:.9;letter-spacing:-.04em;color:var(--gold);  /* dourado 3 de 3 */
 }
-.margem__nota{display:block;margin-top:.6rem;font-size:var(--t-xs);color:var(--claro-2)}
+.margem__nota{display:block;margin-top:.7rem;font-size:var(--t-xs);color:var(--claro-2)}
+@media (min-width:64rem){
+  .margem__total{border-left:1px solid var(--linha-escura);padding-left:4rem}
+}
 
 /* ───────────────────────── fragrâncias ───────────────────────── */
 .trilho{
-  display:flex;gap:.85rem;margin-top:1.75rem;
+  display:flex;gap:.85rem;margin-top:2rem;
   overflow-x:auto;scroll-snap-type:x mandatory;overscroll-behavior-x:contain;
   padding:.25rem var(--pad) .5rem;margin-inline:calc(var(--pad) * -1);
   scrollbar-width:none;
 }
 .trilho::-webkit-scrollbar{display:none}
 .frag{flex:0 0 61%;max-width:14rem;scroll-snap-align:start}
-@media (min-width:56.25rem){
-  .trilho{display:grid;grid-template-columns:repeat(5,1fr);overflow:visible;margin-inline:0;padding-inline:0}
+@media (min-width:64rem){
+  .trilho{display:grid;grid-template-columns:repeat(5,1fr);gap:1.75rem;overflow:visible;margin-inline:0;padding-inline:0}
   .frag{flex:none;max-width:none}
 }
-/* cada card herda a cor do respingo do próprio rótulo */
 .frag__foto{
   background:var(--mist);
   background:color-mix(in srgb,var(--acento) 8%,#fff);
@@ -216,15 +245,11 @@ ol,ul{padding:0;list-style:none}
 .frag__nome{font-family:var(--serif);font-weight:600;font-size:1.1875rem;line-height:1.2;letter-spacing:-.012em}
 .frag__fio{display:block;width:1.75rem;height:3px;background:var(--acento);margin:.55rem 0 .6rem}
 .frag__perfil{font-size:var(--t-sm);line-height:1.45;color:var(--ink-2)}
-.frag__meta{margin-top:.4rem;font-size:var(--t-micro);letter-spacing:.1em;text-transform:uppercase;color:var(--ink-3)}
 
 /* ───────────────────────── garantia ───────────────────────── */
-.passos{margin-top:1.75rem;display:flex;flex-direction:column;gap:1.25rem}
+.passos{margin-top:2rem;display:flex;flex-direction:column;gap:1.25rem}
 .passos li{display:flex;gap:1rem;align-items:baseline}
-.passos__n{
-  flex:none;min-width:1.9rem;font-family:var(--serif);font-weight:700;
-  font-size:1.25rem;color:var(--ink-3);
-}
+.passos__n{flex:none;min-width:1.9rem;font-family:var(--serif);font-weight:700;font-size:1.25rem;color:var(--ink-3)}
 .passos p{font-size:var(--t-base);line-height:1.5;color:var(--ink-2)}
 
 /* ───────────────────────── entrega ───────────────────────── */
@@ -238,42 +263,26 @@ ol,ul{padding:0;list-style:none}
 /* ───────────────────────── rodapé ───────────────────────── */
 .rodape{background:var(--ink);color:var(--claro-2);padding-block:2.5rem 6.5rem;font-size:var(--t-sm);line-height:1.7}
 .rodape .logo{margin-bottom:1.25rem}
-.rodape hr{border:0;border-top:1px solid var(--linha-escura);margin:1.4rem 0}
 .rodape p + p{margin-top:.25rem}
-.rodape b{color:var(--paper);font-weight:600}
 
-/* ───────────────────────── botão flutuante ───────────────────────── */
+/* ── botão flutuante: discreto, e só depois que o hero sai da tela ── */
 .flutuante{
-  position:fixed;right:1rem;z-index:60;
-  bottom:calc(1rem + env(safe-area-inset-bottom,0px));
-  width:3.5rem;height:3.5rem;border-radius:50%;
-  background:var(--whats);color:var(--ink);
+  position:fixed;right:1.25rem;z-index:60;
+  bottom:calc(1.25rem + env(safe-area-inset-bottom,0px));
+  width:3.25rem;height:3.25rem;border-radius:50%;
+  background:var(--ink);color:var(--whats);
   display:grid;place-items:center;
-  box-shadow:0 3px 14px rgba(0,0,0,.24);
-  transition:background-color .16s ease;
+  box-shadow:0 3px 12px rgba(0,0,0,.22);
+  opacity:0;visibility:hidden;transform:translateY(.5rem);
+  transition:opacity .2s ease,transform .2s ease,visibility .2s;
 }
-.flutuante:hover{background:#1FBE5A}
-
-/* aviso de obra: some sozinho quando o último dado real entrar */
-.aviso-dev{
-  position:fixed;inset-inline:0;top:0;z-index:90;
-  background:var(--ink);color:var(--gold);
-  font-family:var(--sans);font-size:var(--t-xs);line-height:1.4;
-  padding:.6rem 3.25rem .6rem 1rem;
-}
-.aviso-dev b{color:var(--paper)}
-.aviso-dev button{
-  position:absolute;top:50%;right:.25rem;transform:translateY(-50%);
-  display:grid;place-items:center;min-width:2.75rem;min-height:2.75rem;
-  background:none;border:0;color:var(--paper);
-  font-family:inherit;font-size:1.25rem;line-height:1;padding:0;cursor:pointer;
-}
+.flutuante.visivel{opacity:1;visibility:visible;transform:none}
+.flutuante:hover{background:#000}
 </style>
 
-<!-- ══════════════ META PIXEL ══════════════
-     Troque PREENCHER_PIXEL_ID pelo ID do pixel.
-     Enquanto não for trocado, nada carrega — zero peso na página.
-     Eventos: PageView na abertura, Contact no clique do WhatsApp. -->
+<!-- ══════════ META PIXEL ══════════
+     Troque PREENCHER_PIXEL_ID pelo ID do pixel. Enquanto não trocar, nada
+     carrega. Eventos: PageView na abertura, Contact no clique do WhatsApp. -->
 <script>
 var PIXEL_ID = 'PREENCHER_PIXEL_ID';
 if (PIXEL_ID.indexOf('PREENCHER') === -1) {
@@ -286,84 +295,114 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
   fbq('track', 'PageView');
 }
 </script>
-<!-- ════════════ FIM META PIXEL ════════════ -->
 </head>
 
 <body>
 
 <!-- ═════════════════════ HERO ═════════════════════ -->
 <header class="secao hero">
-  <div class="wrap">
-    <p class="logo" aria-label="Golden e Grace"><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></p>
+  <div class="wrap wrap--largo">
+    <div class="hero__grid">
 
-    <p class="micro">Atacado · para lojas e salões</p>
+      <div class="hero__texto">
+        <p class="logo" aria-label="Golden e Grace"><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></p>
 
-    <h1 class="h1">
-      <span class="h1__l1">Kit Vitrine</span>
-      <span class="h1__l2">10 unidades por R$ 329</span>
-    </h1>
+        <p class="micro">Atacado · para lojas e salões</p>
 
-    <p class="sub">Body splash 200 ml · as 5 fragrâncias · tester incluso</p>
+        <h1 class="h1">
+          <span class="h1__l1">Kit Vitrine</span>
+          <span class="h1__l2">10 unidades por R$ 329</span>
+        </h1>
 
-    <p class="promessa">
-      <b>Você não paga nada agora.</b>
-      <span>Paga na entrega, na sua loja.</span>
-    </p>
+        <p class="sub">Body splash 200 ml · as 5 fragrâncias · tester incluso</p>
 
-    <div class="acao">
-      <!-- ▼ trocar por LINK_WHATSAPP: https://wa.me/55DDDNUMERO?text=... -->
-      <a class="btn" href="https://wa.me/55PREENCHER_DDDNUMERO?text=Tenho%20loja%20na%20Baixada%20e%20quero%20o%20Kit%20Vitrine" data-evento="Contact" target="_blank" rel="noopener">
-        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.481-8.411"/></svg>
-        Falar no WhatsApp
-      </a>
+        <p class="promessa">
+          <b>Você não paga nada agora.</b>
+          <span>Paga na entrega, na sua loja.</span>
+        </p>
+
+        <div class="acao">
+          <!-- ▼ trocar por LINK_WHATSAPP: https://wa.me/55DDDNUMERO?text=... -->
+          <a class="btn" href="https://wa.me/55PREENCHER_DDDNUMERO?text=Tenho%20loja%20na%20Baixada%20e%20quero%20o%20Kit%20Vitrine" data-evento="Contact" target="_blank" rel="noopener">
+            <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.481-8.411"/></svg>
+            Falar no WhatsApp
+          </a>
+        </div>
+
+        <p class="troca">
+          <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M2.8 10.4 7.4 15 17.2 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          Não vendeu em 45 dias? A gente troca.
+        </p>
+      </div>
+
+      <!-- No mobile esta coluna cai abaixo do botão: o produto importa, mas
+           não pode empurrar o CTA para fora da primeira tela. -->
+      <div class="hero__foto">
+        <svg class="hero__respingo" viewBox="0 0 520 420" aria-hidden="true" focusable="false">
+          <g fill="none" stroke="currentColor" stroke-linecap="round">
+            <path d="M20 372 C130 344 250 272 330 168 C378 106 414 54 442 6" stroke-width="54" opacity="0.17"/>
+            <path d="M64 414 C186 388 300 316 372 216 C412 160 444 108 468 62" stroke-width="26" opacity="0.13"/>
+            <path d="M158 418 C264 396 358 336 424 254" stroke-width="13" opacity="0.10"/>
+          </g>
+          <g fill="currentColor">
+            <circle cx="452" cy="30" r="11" opacity="0.13"/>
+            <circle cx="486" cy="78" r="7" opacity="0.10"/>
+            <circle cx="426" cy="92" r="5" opacity="0.09"/>
+            <circle cx="492" cy="146" r="8" opacity="0.10"/>
+            <circle cx="404" cy="46" r="4.5" opacity="0.08"/>
+          </g>
+        </svg>
+        <div class="vitrine" role="img" aria-label="Os cinco body splash da linha: Sweet Reign, Royal Bloom, Midnight Grace, Azure Mist e Golden Aura">
+          <img src="assets/rotulo-azure-mist.svg" width="160" height="556" decoding="async" alt="">
+          <img src="assets/rotulo-royal-bloom.svg" width="160" height="556" decoding="async" alt="">
+          <img src="assets/rotulo-golden-aura.svg" width="160" height="556" decoding="async" alt="">
+          <img src="assets/rotulo-sweet-reign.svg" width="160" height="556" decoding="async" alt="">
+          <img src="assets/rotulo-midnight-grace.svg" width="160" height="556" decoding="async" alt="">
+        </div>
+      </div>
+
     </div>
-
-    <!-- A garantia de troca saiu daqui de propósito. Ela já tem seção própria e
-         volta no CTA final; ao lado do botão, competia com "você não paga nada
-         agora", que é o argumento mais forte. O hero fica com preço, promessa
-         de pagamento e botão — nada mais. -->
   </div>
 </header>
 
 <!-- ═════════════════════ MARGEM ═════════════════════ -->
-<section class="secao secao--mist" aria-labelledby="t-margem">
-  <div class="wrap">
+<section class="secao secao--ink secao--amplo" aria-labelledby="t-margem">
+  <div class="wrap wrap--largo">
     <h2 class="titulo" id="t-margem">Sua margem</h2>
 
     <div class="margem">
-      <svg class="margem__respingo" viewBox="0 0 400 300" preserveAspectRatio="xMaxYMid slice" aria-hidden="true" focusable="false">
+      <svg class="margem__respingo" viewBox="0 0 400 300" aria-hidden="true" focusable="false">
         <g fill="none" stroke="currentColor" stroke-linecap="round">
-          <path d="M-20 268 C70 246 150 192 208 118 C246 70 276 34 306 2" stroke-width="42" opacity="0.15"/>
-          <path d="M4 300 C96 280 182 224 244 148 C278 106 302 68 320 34" stroke-width="20" opacity="0.11"/>
+          <path d="M-20 268 C70 246 150 192 208 118 C246 70 276 34 306 2" stroke-width="42" opacity="0.16"/>
+          <path d="M4 300 C96 280 182 224 244 148 C278 106 302 68 320 34" stroke-width="20" opacity="0.12"/>
           <path d="M74 300 C154 284 226 236 282 172" stroke-width="10" opacity="0.09"/>
-          <path d="M300 96 C314 74 324 56 330 38" stroke-width="7" opacity="0.10"/>
         </g>
         <g fill="currentColor">
-          <circle cx="330" cy="24" r="8" opacity="0.14"/>
+          <circle cx="330" cy="24" r="8" opacity="0.15"/>
           <circle cx="352" cy="58" r="5" opacity="0.11"/>
           <circle cx="312" cy="70" r="4" opacity="0.10"/>
           <circle cx="358" cy="112" r="6.5" opacity="0.11"/>
-          <circle cx="286" cy="52" r="3.5" opacity="0.09"/>
-          <circle cx="344" cy="158" r="4" opacity="0.09"/>
         </g>
       </svg>
 
-      <div class="margem__linhas">
-        <div class="margem__col">
-          <span class="micro micro--claro">Você compra</span>
-          <span class="margem__valor">R$ 32,90</span>
+      <div class="margem__grid">
+        <div class="margem__precos">
+          <div class="margem__col">
+            <span class="micro micro--claro">Você compra</span>
+            <span class="margem__valor">R$ 32,90</span>
+          </div>
+          <svg class="margem__seta" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h24M19 1.5 24.5 6 19 10.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
+          <div class="margem__col">
+            <span class="micro micro--claro">Você vende</span>
+            <span class="margem__valor">R$ 79,90</span>
+          </div>
         </div>
-        <svg class="margem__seta" viewBox="0 0 28 12" aria-hidden="true"><path d="M0 6h24M19 1.5 24.5 6 19 10.5" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"/></svg>
-        <div class="margem__col">
-          <span class="micro micro--claro">Você vende</span>
-          <span class="margem__valor">R$ 79,90</span>
-        </div>
-      </div>
 
-      <div class="margem__total">
-        <span class="micro micro--claro">Lucro por kit</span>
-        <strong class="margem__lucro">R$ 470</strong>
-        <span class="margem__nota">10 unidades × R$ 47 de margem</span>
+        <div class="margem__total">
+          <span class="micro micro--claro">Lucro por kit</span>
+          <strong class="margem__lucro">R$ 470</strong>
+          <span class="margem__nota">10 unidades × R$ 47 de margem</span>
+        </div>
       </div>
     </div>
   </div>
@@ -373,6 +412,7 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 <section class="secao" aria-labelledby="t-frag">
   <div class="wrap wrap--largo">
     <h2 class="titulo" id="t-frag">As 5 fragrâncias</h2>
+    <p class="lede">Todas 200 ml · desodorante corporal.</p>
 
     <div class="trilho" tabindex="0" role="group" aria-label="As 5 fragrâncias da linha">
 
@@ -381,7 +421,6 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
         <h3 class="frag__nome">Sweet Reign</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral oriental — limão, vanilla e musk.</p>
-        <p class="frag__meta">200 ml · Desodorante corporal</p>
       </article>
 
       <article class="frag" style="--acento:#C22B5E">
@@ -389,7 +428,6 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
         <h3 class="frag__nome">Royal Bloom</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral amadeirado — bergamota e âmbar.</p>
-        <p class="frag__meta">200 ml · Desodorante corporal</p>
       </article>
 
       <article class="frag" style="--acento:#1B4E9B">
@@ -397,7 +435,6 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
         <h3 class="frag__nome">Midnight Grace</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral oriental — sândalo, jasmim e baunilha.</p>
-        <p class="frag__meta">200 ml · Desodorante corporal</p>
       </article>
 
       <article class="frag" style="--acento:#1B8FD1">
@@ -405,7 +442,6 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
         <h3 class="frag__nome">Azure Mist</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral oriental musk — maçã e ambergris.</p>
-        <p class="frag__meta">200 ml · Desodorante corporal</p>
       </article>
 
       <article class="frag" style="--acento:#C89B5F">
@@ -413,7 +449,6 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
         <h3 class="frag__nome">Golden Aura</h3>
         <span class="frag__fio" aria-hidden="true"></span>
         <p class="frag__perfil">Floral frutado — pera, ameixa, baunilha e amora.</p>
-        <p class="frag__meta">200 ml · Desodorante corporal</p>
       </article>
 
     </div>
@@ -422,19 +457,19 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 
 <!-- ═════════════════════ GARANTIA ═════════════════════ -->
 <section class="secao secao--mist" aria-labelledby="t-garantia">
-  <div class="wrap">
+  <div class="wrap wrap--largo"><div class="coluna">
     <h2 class="titulo" id="t-garantia">Como funciona a garantia</h2>
     <ol class="passos">
       <li><span class="passos__n" aria-hidden="true">01</span><p>Você recebe o kit e expõe. O tester fica aberto no balcão.</p></li>
       <li><span class="passos__n" aria-hidden="true">02</span><p>Passaram 45 dias e sobrou peça sem vender?</p></li>
       <li><span class="passos__n" aria-hidden="true">03</span><p>Você avisa no WhatsApp e a gente troca.</p></li>
     </ol>
-  </div>
+  </div></div>
 </section>
 
 <!-- ═════════════════════ ENTREGA ═════════════════════ -->
 <section class="secao" aria-labelledby="t-entrega">
-  <div class="wrap">
+  <div class="wrap wrap--largo"><div class="coluna">
     <h2 class="titulo" id="t-entrega">Entrega em até 24h</h2>
     <p class="lede">Estoque próprio em São Vicente. Acabou hoje, você repõe amanhã.</p>
     <ul class="cidades">
@@ -443,12 +478,12 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
       <li>Praia Grande</li>
       <li>Cubatão</li>
     </ul>
-  </div>
+  </div></div>
 </section>
 
 <!-- ═════════════════════ CTA FINAL ═════════════════════ -->
 <section class="secao secao--ink" aria-labelledby="t-fecho">
-  <div class="wrap">
+  <div class="wrap wrap--largo"><div class="coluna">
     <h2 class="titulo" id="t-fecho">Kit Vitrine — R$ 329</h2>
     <p class="lede lede--claro">10 unidades, as 5 fragrâncias, tester incluso. Você não paga nada agora: paga na entrega, na sua loja.</p>
 
@@ -461,27 +496,25 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 
     <p class="troca troca--claro">
       <svg viewBox="0 0 20 20" width="16" height="16" aria-hidden="true"><path d="M2.8 10.4 7.4 15 17.2 5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/></svg>
-      O que não vender em 45 dias, a gente troca.
+      Não vendeu em 45 dias? A gente troca.
     </p>
-  </div>
+  </div></div>
 </section>
 
 <!-- ═════════════════════ RODAPÉ ═════════════════════ -->
 <footer class="rodape">
-  <div class="wrap">
+  <div class="wrap wrap--largo">
     <p class="logo logo--claro" aria-label="Golden e Grace"><span>Golden</span><span><span class="amp" aria-hidden="true">&amp;</span>Grace</span></p>
 
     <!-- ▼▼▼ DADOS LEGAIS — DESCOMENTE E PREENCHA ANTES DE RODAR TRÁFEGO ▼▼▼
-         Este bloco está comentado de propósito: rodapé com "PREENCHER" visível
-         destrói a confiança justamente do lojista que a página quer convencer.
-         Melhor não mostrar do que mostrar vago.
+         Comentado de propósito: rodapé com "PREENCHER" visível destrói a
+         confiança do lojista que a página quer convencer.
 
-    <p><b>PREENCHER_RAZAO_SOCIAL</b></p>
-    <p>CNPJ PREENCHER_CNPJ</p>
-    <p>PREENCHER_ENDERECO — São Vicente/SP</p>
-    <hr>
-    <p>Atendimento com <b>PREENCHER_RESPONSAVEL</b>, de segunda a sexta.</p>
-    <p>Pagamento na entrega, PREENCHER_PAGAMENTO.</p>
+    <p><b>RAZÃO SOCIAL</b></p>
+    <p>CNPJ 00.000.000/0001-00</p>
+    <p>Endereço — São Vicente/SP</p>
+    <p>Atendimento com NOME, de segunda a sexta.</p>
+    <p>Pagamento na entrega, em dinheiro, Pix ou cartão.</p>
     ▲▲▲ FIM DOS DADOS LEGAIS ▲▲▲ -->
 
     <p>Venda exclusiva no atacado, mediante CNPJ.</p>
@@ -490,7 +523,7 @@ if (PIXEL_ID.indexOf('PREENCHER') === -1) {
 </footer>
 
 <a class="flutuante" href="https://wa.me/55PREENCHER_DDDNUMERO?text=Tenho%20loja%20na%20Baixada%20e%20quero%20o%20Kit%20Vitrine" data-evento="Contact" target="_blank" rel="noopener" aria-label="Falar no WhatsApp">
-  <svg viewBox="0 0 24 24" width="30" height="30" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.481-8.411"/></svg>
+  <svg viewBox="0 0 24 24" width="26" height="26" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.481-8.411"/></svg>
 </a>
 
 <script>
@@ -500,17 +533,16 @@ document.addEventListener('click', function (e) {
   if (alvo && typeof fbq === 'function') fbq('track', alvo.dataset.evento);
 }, true);
 
-// Aviso de obra. Lista o que falta e some sozinho quando o último dado entrar.
+// O flutuante só aparece depois que o hero sai da tela — enquanto o botão
+// principal está à vista, dois CTAs competiriam pela mesma decisão.
 (function () {
-  var achados = (document.documentElement.innerHTML.match(/PREENCHER_[A-Z_]+/g) || [])
-    .filter(function (v, i, a) { return a.indexOf(v) === i; });
-  if (!achados.length) return;
-  var aviso = document.createElement('div');
-  aviso.className = 'aviso-dev';
-  aviso.innerHTML = '<b>Ainda em obra.</b> Faltam: ' + achados.join(', ') +
-    '<button type="button" aria-label="Fechar aviso">&times;</button>';
-  aviso.querySelector('button').onclick = function () { aviso.remove(); };
-  document.body.appendChild(aviso);
+  var hero = document.querySelector('.hero');
+  var fab = document.querySelector('.flutuante');
+  if (!hero || !fab) return;
+  if (!('IntersectionObserver' in window)) { fab.classList.add('visivel'); return; }
+  new IntersectionObserver(function (entradas) {
+    fab.classList.toggle('visivel', !entradas[0].isIntersecting);
+  }, { rootMargin: '-96px 0px 0px 0px' }).observe(hero);
 })();
 </script>
 
