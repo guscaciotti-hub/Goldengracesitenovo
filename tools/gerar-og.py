@@ -40,7 +40,7 @@ def main() -> None:
     serif_lg = carregar("playfair-latin.woff2", 92)
     serif_md = carregar("playfair-latin.woff2", 64)
     serif_sm = carregar("playfair-latin.woff2", 40)
-    sans_sm = carregar("inter-latin.woff2", 25)
+    sans_sm = carregar("plex-latin.woff2", 24)
 
     # faixa preta inferior com o lucro
     d.rectangle([0, 452, 1200, 630], fill=INK)
@@ -56,7 +56,7 @@ def main() -> None:
     # oferta
     centralizar(d, 200, "Kit Vitrine", serif_lg, INK)
     centralizar(d, 310, "10 unidades por R$ 329", serif_md, INK)
-    centralizar(d, 396, "Body splash 200 ml  ·  As 5 fragrâncias  ·  Tester incluso", sans_sm, (90, 90, 90))
+    centralizar(d, 388, "Você não paga nada agora. Paga na entrega, na sua loja.", sans_sm, (40, 40, 40))
 
     # faixa do lucro
     centralizar(d, 486, "LUCRO POR KIT", sans_sm, CINZA)

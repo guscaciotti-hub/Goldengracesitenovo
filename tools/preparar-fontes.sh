@@ -36,5 +36,5 @@ PY
 }
 
 mkdir -p assets/fonts
-baixar_e_reduzir playfair-latin "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" 500 600
-baixar_e_reduzir inter-latin    "https://fonts.gstatic.com/s/inter/v20/UcC73FwrK3iLTeHuS_nVMrMxCp50SjIa1ZL7.woff2"        400 600
+baixar_e_reduzir playfair-latin "https://fonts.gstatic.com/s/playfairdisplay/v40/nuFiD-vYSZviVYUb_rj3ij__anPXDTzYgA.woff2" 600 700
+baixar_e_reduzir plex-latin     "https://fonts.gstatic.com/s/ibmplexsans/v23/zYXzKVElMYYaJe8bpLHnCwDKr932-G7dytD-Dmu1syxeKYY.woff2" 400 600
