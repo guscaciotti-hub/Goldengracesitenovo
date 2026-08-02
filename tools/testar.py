@@ -43,8 +43,12 @@ def main() -> None:
         pagina.on("console", lambda m: erros.append(m.text) if m.type == "error" else None)
         pagina.on("pageerror", lambda e: erros.append(str(e)))
         pagina.goto(url, wait_until="networkidle")
-        pagina.evaluate("document.querySelector('.aviso-dev')?.remove()")
-        pagina.wait_for_timeout(400)
+        pagina.evaluate("""async () => {
+          for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
+          window.scrollTo(0, 0);
+        }""")
+        pagina.wait_for_function("[...document.images].every(i => i.complete && (!i.getAttribute('src') || i.naturalWidth > 0))", timeout=20000)
+        pagina.wait_for_timeout(600)
 
         pagina.screenshot(path=SAIDA / "mobile-dobra.png")
         pagina.screenshot(path=SAIDA / "mobile-inteira.png", full_page=True)
@@ -58,8 +62,12 @@ def main() -> None:
         ctx = navegador.new_context(viewport={"width": 1440, "height": 900})
         pagina = ctx.new_page()
         pagina.goto(url, wait_until="networkidle")
-        pagina.evaluate("document.querySelector('.aviso-dev')?.remove()")
-        pagina.wait_for_timeout(400)
+        pagina.evaluate("""async () => {
+          for (let y = 0; y < document.body.scrollHeight; y += 400) { window.scrollTo(0, y); await new Promise(r => setTimeout(r, 40)); }
+          window.scrollTo(0, 0);
+        }""")
+        pagina.wait_for_function("[...document.images].every(i => i.complete && (!i.getAttribute('src') || i.naturalWidth > 0))", timeout=20000)
+        pagina.wait_for_timeout(600)
         pagina.screenshot(path=SAIDA / "desktop-dobra.png")
         pagina.screenshot(path=SAIDA / "desktop-inteira.png", full_page=True)
         ctx.close()

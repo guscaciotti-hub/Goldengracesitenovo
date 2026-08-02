@@ -17,24 +17,31 @@ Todo push republica o site sozinho, em ~30 s.
 
 ---
 
-## 1. Como as fotos entram
+## 1. As fotos
 
-**Você não precisa mexer no código.** Cada bloco que depende de foto fica
-escondido até o arquivo existir no repositório. Assim que a foto entra, o bloco
-aparece sozinho. Moldura vazia numa página cujo trabalho é provar que a empresa
-existe faz exatamente o efeito contrário.
+As fotos oficiais e o logo já estão na página. Os originais ficam em
+`assets/originais/`; `python3 tools/preparar-imagens.py` gera o que a página
+usa. **Só rode de novo se trocar os originais.**
+
+O que o processamento faz: as cinco fotos vieram do mesmo rig — fundo `#ECEAEB`
+liso e o frasco no mesmo lugar em todas — então dá para recortar o fundo por
+inundação a partir das bordas (chave de cor global comeria o vidro claro),
+recortar as cinco no mesmo enquadramento e montar o lineup do hero sobrepondo
+os frascos de verdade.
+
+**Os blocos que ainda não têm foto continuam escondidos** até o arquivo existir.
+Moldura vazia numa página cujo trabalho é provar que a empresa existe faz
+exatamente o efeito contrário.
+
+Ainda faltam:
 
 | Arquivo | O que acende |
 |---|---|
-| `assets/logo.png` | logo oficial no lugar do logotipo tipográfico |
-| `assets/hero-composicao.webp` | segunda coluna do hero; o layout vira 55/45 |
-| `assets/frascos/{sweet-reign,royal-bloom,midnight-grace,azure-mist,golden-aura}.webp` | foto em cada card de fragrância |
 | `assets/prova/avaliacao-01..04.webp` | bloco de avaliações |
 | `assets/prova/loja-01..03.webp` | bloco "já está no balcão" |
 | `assets/socios.webp` + `assets/estoque.webp` | seção "A gente entrega pessoalmente" |
 
-WebP, máximo 1000px de largura. Pode subir `.jpg` que a conversão é um comando:
-`cwebp -q 82 -resize 1000 0 foto.jpg -o assets/frascos/sweet-reign.webp`
+Pode subir `.jpg` — eu converto para WebP no processamento.
 
 Nas fotos de loja, troque `PREENCHER_LOJA_1..3` no `index.html` pelo nome do
 estabelecimento. Enquanto não trocar, a legenda simplesmente não aparece — foto
@@ -95,12 +102,15 @@ basta pôr `data-evento="Nome"` na tag.
 
 ## 5. Decisões de design
 
-**Zero imagem gerada.** Não há textura, respingo desenhado nem frasco vetorial
-na página. Numa página que existe para provar que a empresa é real, imagem
-gerada trabalha contra — e um lojista que já foi abordado por dezenas de
-fornecedores reconhece isso na hora. Enquanto não houver foto de verdade, o peso
-visual vem de tipografia. Foi por isso que os `rotulo-*.svg` das versões
-anteriores saíram.
+**Zero imagem gerada.** Não há textura, respingo desenhado nem frasco vetorial.
+Tudo que aparece é foto real ou tipografia. Numa página que existe para provar
+que a empresa é real, imagem gerada trabalha contra — um lojista que já foi
+abordado por dezenas de fornecedores reconhece isso na hora.
+
+**O véu de cor em cada card de fragrância não é enfeite.** O frasco é de vidro
+transparente e, recortado do fundo, sobre branco ele some. Cada tile recebe um
+véu de 14% da cor do respingo do próprio rótulo: dá contorno ao vidro e é o que
+diferencia um card do outro.
 
 **O conceito é tabela de preços de atacado**, não landing page: tudo alinhado à
 esquerda no mesmo eixo, micro-rótulos em caixa alta, fios capilares, algarismos
@@ -133,7 +143,8 @@ frase da linha de cima.
 
 | Comando | O que faz |
 |---|---|
-| `python3 tools/gerar-og.py` | regera `assets/og.png`, a imagem de compartilhamento |
+| `python3 tools/preparar-imagens.py` | recorta o fundo das fotos, gera os cards e o lineup do hero |
+| `python3 tools/gerar-og.py` | regera `assets/og.png`, o cartão de compartilhamento |
 | `./tools/preparar-fontes.sh` | baixa e reduz as fontes |
 | `python3 tools/testar.py` | sobe a página e tira prints em 375px e 1440px |
 | `python3 tools/gerar-preview.py` | versão de arquivo único, tudo embutido |
