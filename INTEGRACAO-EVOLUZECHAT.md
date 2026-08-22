@@ -53,6 +53,12 @@ do produto — quem responde é o fornecedor. O que dá para adiantar:
 `valor` e `total_unidades` são números. `whatsapp` vai só com dígitos.
 `fragrancias` sempre traz as 5 chaves, inclusive as zeradas.
 
+**`valor` não é fixo.** O lojista pode levar mais de um kit, então
+`valor = 169 × kits` e `total_unidades = 5 × kits` (teto de 10 kits na página).
+Com mais de um kit, `kit` vem como `"Kit Vitrine 5 un x3"` e a mensagem do grupo
+diz `15 un (3 kits) — R$ 507`. **Não cravem 169 nem 5 do lado de vocês** — leiam
+sempre `valor` e `total_unidades` do payload.
+
 `mensagem_grupo` já vem pronta, no formato do item 2 — é só repassar:
 
 ```

@@ -82,6 +82,10 @@ input:focus,select:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 2
 .passo button:disabled{color:var(--claro-2);cursor:default}
 .passo output{min-width:2rem;text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
 
+.kits{display:flex;align-items:center;gap:1rem;flex-wrap:wrap}
+.kits__conta{font-size:var(--t-sm);color:var(--ink-2);font-variant-numeric:tabular-nums}
+.kits__conta b{color:var(--ink);font-weight:600}
+
 .total{display:flex;justify-content:space-between;align-items:baseline;
   margin-top:1rem;font-size:var(--t-sm);color:var(--ink-2)}
 .total b{font-variant-numeric:tabular-nums;color:var(--ink)}
@@ -136,7 +140,7 @@ input:focus,select:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 2
 
       <p class="oferta">
         <b>R$ 169</b>
-        <span>Kit Vitrine · 5 unidades de 200 ml · tester incluso</span>
+        <span>por kit · 5 unidades de 200 ml · tester incluso</span>
         <span>Pagamento na entrega · troca em 45 dias</span>
       </p>
     </div>
@@ -144,11 +148,24 @@ input:focus,select:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 2
     <form id="form" novalidate>
 
       <fieldset>
-        <legend class="rotulo">As 5 unidades
-          <span class="dica">Uma de cada, ou repita a que sai mais. O total precisa fechar em 5.</span>
+        <legend class="rotulo">Quantos kits</legend>
+        <div class="kits">
+          <span class="passo">
+            <button type="button" id="kit-menos" aria-label="Tirar um kit">−</button>
+            <output id="kit-qtd" aria-live="polite" aria-label="Quantidade de kits">1</output>
+            <button type="button" id="kit-mais" aria-label="Somar um kit">+</button>
+          </span>
+          <span class="kits__conta" id="kits-conta"></span>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="rotulo">Distribua as <span id="alvo-txt">5</span> unidades
+          <span class="dica">Uma de cada, ou repita a que sai mais.</span>
         </legend>
         <div id="frascos"></div>
-        <p class="total" id="total"><span>Total montado</span><b><span id="soma">5</span> de 5</b></p>
+        <p class="total" id="total"><span>Total montado</span><b><span id="soma">5</span> de <span id="alvo-total">5</span></b></p>
+        <p class="erro" id="erro-total" hidden></p>
       </fieldset>
 
       <fieldset>
@@ -279,6 +296,8 @@ var CONFIG = {
 };
 
 var KIT = { nome: 'Kit Vitrine 5 un', valor: 169, unidades: 5 };
+var KITS_MAX = 10;   // trava contra dedo gordo; acima disso a equipe passa condição
+var kits = 1;
 var FRAGRANCIAS = [
   { chave: 'sweet_reign',    nome: 'Sweet Reign',    cor: '#C4796B' },
   { chave: 'royal_bloom',    nome: 'Royal Bloom',    cor: '#C22B5E' },
@@ -294,6 +313,33 @@ FRAGRANCIAS.forEach(function (f) { quantidades[f.chave] = 1; });
 
 function somaUnidades() {
   return FRAGRANCIAS.reduce(function (t, f) { return t + quantidades[f.chave]; }, 0);
+}
+function alvo()  { return kits * KIT.unidades; }
+function valor() { return kits * KIT.valor; }
+
+/* Ao mudar a quantidade de kits, remonta a distribuição sem jogar fora o que o
+   lojista já escolheu: soma em rodízio e tira sempre da fragrância com mais
+   unidades, para não zerar uma que ele fez questão de pedir. */
+function ajustarPara(destino) {
+  var i = 0, guarda = 0;
+  while (somaUnidades() < destino && guarda++ < 500) {
+    quantidades[FRAGRANCIAS[i++ % FRAGRANCIAS.length].chave]++;
+  }
+  guarda = 0;
+  while (somaUnidades() > destino && guarda++ < 500) {
+    var maior = FRAGRANCIAS.reduce(function (a, b) {
+      return quantidades[b.chave] > quantidades[a.chave] ? b : a;
+    });
+    quantidades[maior.chave]--;
+  }
+}
+
+function mudarKits(delta) {
+  var novo = kits + delta;
+  if (novo < 1 || novo > KITS_MAX) return;
+  kits = novo;
+  ajustarPara(alvo());
+  desenharFrascos();
 }
 
 function desenharFrascos() {
@@ -319,20 +365,42 @@ function desenharFrascos() {
 
 function mudar(chave, delta) {
   var novo = quantidades[chave] + delta;
-  if (novo < 0 || novo > KIT.unidades) return;
+  if (novo < 0 || novo > alvo()) return;
   quantidades[chave] = novo;
   desenharFrascos();
 }
 
 function atualizarTotal() {
-  var s = somaUnidades();
-  document.getElementById('soma').textContent = s;
-  document.getElementById('total').classList.toggle('err', s !== KIT.unidades);
-  // trava o + quando já fechou 5, para não deixar montar um kit inválido
-  document.querySelectorAll('[data-mais]').forEach(function (b) { b.disabled = s >= KIT.unidades; });
+  var soma = somaUnidades(), destino = alvo();
+
+  document.getElementById('soma').textContent = soma;
+  document.getElementById('alvo-total').textContent = destino;
+  document.getElementById('alvo-txt').textContent = destino;
+  document.getElementById('total').classList.toggle('err', soma !== destino);
+
+  document.getElementById('kit-qtd').textContent = kits;
+  document.getElementById('kit-menos').disabled = kits <= 1;
+  document.getElementById('kit-mais').disabled = kits >= KITS_MAX;
+  document.getElementById('kits-conta').innerHTML =
+    kits + (kits > 1 ? ' kits' : ' kit') + ' · ' + destino + ' unidades · <b>R$ ' + valor() + '</b>';
+
+  // O + de cada fragrância nunca fica morto: passar do total é permitido e
+  // avisado. Só o − trava, em zero, onde não há o que explicar.
   document.querySelectorAll('[data-menos]').forEach(function (b, i) {
     b.disabled = quantidades[FRAGRANCIAS[i].chave] === 0;
   });
+
+  var aviso = document.getElementById('erro-total');
+  if (soma > destino) {
+    aviso.textContent = 'Passou ' + (soma - destino) + ' unidade' + (soma - destino > 1 ? 's' : '') +
+      '. Tire de alguma fragrância, ou some mais um kit.';
+    aviso.hidden = false;
+  } else if (soma < destino) {
+    aviso.textContent = 'Faltam ' + (destino - soma) + ' unidade' + (destino - soma > 1 ? 's' : '') + '.';
+    aviso.hidden = false;
+  } else {
+    aviso.hidden = true;
+  }
 }
 
 /* ───────── utilidades ───────── */
@@ -373,7 +441,8 @@ function montarMensagem(p) {
   var linhas = [
     'NOVO PEDIDO — ' + p.id,
     p.loja + ' · ' + p.bairro + ', ' + p.cidade,
-    KIT.unidades + ' un — R$ ' + KIT.valor + ' — ' + p.pagamento + ' na entrega',
+    p.total_unidades + ' un' + (kits > 1 ? ' (' + kits + ' kits)' : '') +
+      ' — R$ ' + p.valor + ' — ' + p.pagamento + ' na entrega',
     diaPorExtenso(p.data_entrega) + ' — ' + p.janela,
     p.endereco
   ];
@@ -445,8 +514,8 @@ function validar() {
   if (tel && (tel.length < 10 || tel.length > 11)) faltando.push(document.getElementById('whatsapp'));
 
   var erro = document.getElementById('erro-geral');
-  if (somaUnidades() !== KIT.unidades) {
-    erro.textContent = 'O kit precisa fechar em ' + KIT.unidades + ' unidades. Agora está com ' + somaUnidades() + '.';
+  if (somaUnidades() !== alvo()) {
+    erro.textContent = 'A distribuição precisa fechar em ' + alvo() + ' unidades. Agora está com ' + somaUnidades() + '.';
     erro.hidden = false;
     document.getElementById('frascos').scrollIntoView({ block: 'center' });
     return false;
@@ -470,8 +539,8 @@ function montarPayload() {
     evento: 'pedido_confirmado',
     id: novoId(),
     criado_em: agoraISO(),
-    kit: KIT.nome,
-    valor: KIT.valor,
+    kit: kits > 1 ? KIT.nome + ' x' + kits : KIT.nome,
+    valor: valor(),
     fragrancias: JSON.parse(JSON.stringify(quantidades)),
     total_unidades: somaUnidades(),
     loja: v('loja'),
@@ -505,7 +574,7 @@ function mostrarConfirmacao(p, entregue) {
     : 'Não conseguimos falar com o servidor agora. Toque no botão abaixo para mandar o pedido pelo WhatsApp — assim ele não se perde.';
 
   var itens = [
-    ['Kit', KIT.nome + ' — R$ ' + KIT.valor],
+    ['Kit', p.kit + ' — R$ ' + p.valor],
     ['Fragrâncias', FRAGRANCIAS.filter(function (f) { return p.fragrancias[f.chave] > 0; })
       .map(function (f) { return f.nome + ' ' + p.fragrancias[f.chave]; }).join(' · ')],
     ['Entrega', diaPorExtenso(p.data_entrega) + ', ' + p.janela.toLowerCase()],
@@ -525,6 +594,8 @@ function mostrarConfirmacao(p, entregue) {
 
 /* ───────── início ───────── */
 (function () {
+  document.getElementById('kit-menos').onclick = function () { mudarKits(-1); };
+  document.getElementById('kit-mais').onclick  = function () { mudarKits(+1); };
   desenharFrascos();
 
   // entrega em até 24h: o mais cedo possível é amanhã

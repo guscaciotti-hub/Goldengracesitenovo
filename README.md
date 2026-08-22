@@ -97,14 +97,61 @@ qualificar o lojista. A landing só tem um atalho em texto no fechamento, sem
 peso de botão, para quem já sabe o que quer.
 
 A oferta é Kit Vitrine, 5 unidades entre as 5 fragrâncias, R$ 169, pagamento na
-entrega. O contador trava em 5 — não dá para enviar um kit inválido.
+entrega. O lojista escolhe **quantos kits** levar (teto de 10) e distribui as
+unidades entre as fragrâncias; o preço acompanha, `169 × kits`.
+
+O `+` de cada fragrância nunca fica desabilitado. Travar o botão quando o total
+fecha faz a tela parecer que só dá para pedir uma de cada — passar do total é
+permitido e avisado em vermelho, e o envio é que bloqueia.
 
 O contrato do webhook, os pontos da spec que precisam de ajuste e o que fazer
 quando o POST falha estão em **[INTEGRACAO-EVOLUZECHAT.md](INTEGRACAO-EVOLUZECHAT.md)**.
 
 ---
 
-## 5. Estrutura
+## 5. Domínio próprio
+
+O site está em `github.io` e passa a atender no domínio da marca **sem perder
+nada**: o endereço antigo continua funcionando e redireciona para o novo, e o
+jeito de editar não muda em nada — push na branch, republica em ~30 s.
+
+**Passo 1 — no repositório**
+
+```
+./tools/aplicar-dominio.sh seudominio.com.br
+```
+
+Cria o arquivo `CNAME` e troca `PREENCHER_DOMINIO` nas tags canonical e og das
+duas páginas. O `CNAME` precisa existir no repositório: sem ele, um deploy
+seguinte pode derrubar o domínio configurado em Settings.
+
+**Passo 2 — no painel do registro.br**, na zona DNS do domínio:
+
+| Tipo | Nome | Valor |
+|---|---|---|
+| A | @ | `185.199.108.153` |
+| A | @ | `185.199.109.153` |
+| A | @ | `185.199.110.153` |
+| A | @ | `185.199.111.153` |
+| AAAA | @ | `2606:50c0:8000::153` |
+| AAAA | @ | `2606:50c0:8001::153` |
+| AAAA | @ | `2606:50c0:8002::153` |
+| AAAA | @ | `2606:50c0:8003::153` |
+| CNAME | www | `guscaciotti-hub.github.io.` |
+
+Os quatro A são o mesmo servidor em endereços diferentes — são todos
+necessários. O ponto final no CNAME do `www` não é erro de digitação.
+
+**Passo 3 — Settings → Pages → Custom domain**: escreva o domínio e salve.
+Quando o DNS propagar, marque **Enforce HTTPS** (o certificado é automático e
+pode levar alguns minutos para aparecer).
+
+Propagação no `.br` costuma levar de minutos a algumas horas. Enquanto isso o
+`github.io` segue no ar normalmente.
+
+---
+
+## 6. Estrutura
 
 ```
 1. Hero               8. Entrega
@@ -118,7 +165,7 @@ quando o POST falha estão em **[INTEGRACAO-EVOLUZECHAT.md](INTEGRACAO-EVOLUZECH
 
 ---
 
-## 6. Decisões de design
+## 7. Decisões de design
 
 **Zero imagem gerada.** Não há textura, respingo desenhado nem frasco vetorial.
 Tudo que aparece é foto real ou tipografia. Numa página que existe para provar
@@ -162,10 +209,11 @@ multiplicação, que apareceria errada na tela.
 
 ---
 
-## 7. Scripts
+## 8. Scripts
 
 | Comando | O que faz |
 |---|---|
+| `./tools/aplicar-dominio.sh dominio.com.br` | liga o domínio próprio: cria o CNAME e preenche as tags |
 | `python3 tools/preparar-imagens.py` | recorta o fundo das fotos, gera os cards e o lineup do hero |
 | `python3 tools/gerar-og.py` | regera `assets/og.png`, o cartão de compartilhamento |
 | `./tools/preparar-fontes.sh` | baixa e reduz as fontes |
