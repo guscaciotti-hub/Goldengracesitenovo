@@ -111,43 +111,33 @@ quando o POST falha estão em **[INTEGRACAO-EVOLUZECHAT.md](INTEGRACAO-EVOLUZECH
 
 ## 5. Domínio próprio
 
-O site está em `github.io` e passa a atender no domínio da marca **sem perder
-nada**: o endereço antigo continua funcionando e redireciona para o novo, e o
-jeito de editar não muda em nada — push na branch, republica em ~30 s.
+O site atende em **atacado.goldengrace.com.br**.
 
-**Passo 1 — no repositório**
+**Por que subdomínio e não o domínio raiz.** `goldengrace.com.br` já responde
+pelo Shopify (`23.227.38.65`) — é a loja de varejo, a mesma para onde o agente
+manda consumidora final. Apontar o raiz para o GitHub Pages derrubaria essa
+loja. Com subdomínio, nada do que já existe é tocado.
 
-```
-./tools/aplicar-dominio.sh seudominio.com.br
-```
-
-Cria o arquivo `CNAME` e troca `PREENCHER_DOMINIO` nas tags canonical e og das
-duas páginas. O `CNAME` precisa existir no repositório: sem ele, um deploy
-seguinte pode derrubar o domínio configurado em Settings.
-
-**Passo 2 — no painel do registro.br**, na zona DNS do domínio:
+**Passo 1 — no painel do registro.br**, na zona DNS, um registro só:
 
 | Tipo | Nome | Valor |
 |---|---|---|
-| A | @ | `185.199.108.153` |
-| A | @ | `185.199.109.153` |
-| A | @ | `185.199.110.153` |
-| A | @ | `185.199.111.153` |
-| AAAA | @ | `2606:50c0:8000::153` |
-| AAAA | @ | `2606:50c0:8001::153` |
-| AAAA | @ | `2606:50c0:8002::153` |
-| AAAA | @ | `2606:50c0:8003::153` |
-| CNAME | www | `guscaciotti-hub.github.io.` |
+| CNAME | `atacado` | `guscaciotti-hub.github.io.` |
 
-Os quatro A são o mesmo servidor em endereços diferentes — são todos
-necessários. O ponto final no CNAME do `www` não é erro de digitação.
+O ponto final no fim não é erro de digitação. **Não mexa em nenhum registro
+existente** — os do Shopify continuam como estão.
 
-**Passo 3 — Settings → Pages → Custom domain**: escreva o domínio e salve.
-Quando o DNS propagar, marque **Enforce HTTPS** (o certificado é automático e
-pode levar alguns minutos para aparecer).
+**Passo 2 — Settings → Pages → Custom domain**: escreva
+`atacado.goldengrace.com.br` e salve. Quando o DNS propagar, marque
+**Enforce HTTPS**; o certificado é automático e leva alguns minutos.
 
-Propagação no `.br` costuma levar de minutos a algumas horas. Enquanto isso o
-`github.io` segue no ar normalmente.
+Propagação no `.br` costuma levar de minutos a algumas horas. Até lá o
+`github.io` segue no ar, e depois passa a redirecionar para o domínio novo.
+
+**Editar continua igual:** push na branch, republica em ~30 s.
+
+Para trocar de endereço depois (outro subdomínio, ou o raiz caso a loja saia
+do Shopify): `./tools/aplicar-dominio.sh novo.endereco.com.br`.
 
 ---
 

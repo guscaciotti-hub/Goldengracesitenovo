@@ -19,6 +19,6 @@ printf '%s\n' "$DOM" > CNAME
 sed -i "s/PREENCHER_DOMINIO/$DOM/g" index.html pedido.html
 
 echo "CNAME criado com $DOM"
-echo "ocorrências restantes de PREENCHER_DOMINIO: $(grep -c PREENCHER_DOMINIO index.html pedido.html | paste -sd+ | bc)"
+echo "ocorrências restantes de PREENCHER_DOMINIO: $(grep -ho PREENCHER_DOMINIO index.html pedido.html | wc -l)"
 echo
 echo "Falta, no painel do registro.br, apontar o DNS — os registros estão no README."
