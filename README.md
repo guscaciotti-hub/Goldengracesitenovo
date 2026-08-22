@@ -11,6 +11,7 @@ HTML + CSS inline, sem framework, sem build, sem backend.
 | Repositório | <https://github.com/guscaciotti-hub/Goldengracesitenovo> |
 | Editar a página | [`index.html`](https://github.com/guscaciotti-hub/Goldengracesitenovo/edit/claude/golden-grace-landing-page-6qrspf/index.html) |
 | Subir fotos | [`assets/`](https://github.com/guscaciotti-hub/Goldengracesitenovo/upload/claude/golden-grace-landing-page-6qrspf/assets) |
+| Página de pedido | <https://guscaciotti-hub.github.io/Goldengracesitenovo/pedido.html> |
 | Deploys | <https://github.com/guscaciotti-hub/Goldengracesitenovo/actions> |
 
 Todo push republica o site sozinho, em ~30 s.
@@ -54,6 +55,8 @@ com token à mostra é pior que foto sem legenda.
 | Token | O que é |
 |---|---|
 | `PREENCHER_DDDNUMERO` | só os dígitos com DDD, ex. `13991234567` — **3 botões** |
+| `PREENCHER_ENDPOINT_EVOLUZECHAT` | endpoint do webhook — em `pedido.html` |
+| `PREENCHER_TOKEN` | token do webhook — em `pedido.html` |
 | `PREENCHER_PIXEL_ID` | ID do Pixel da Meta |
 | `PREENCHER_DOMINIO` | domínio final, sem `https://` |
 | `PREENCHER_LOJA_1..3` | nome das lojas nas fotos de balcão |
@@ -86,7 +89,22 @@ basta pôr `data-evento="Nome"` na tag.
 
 ---
 
-## 4. Estrutura
+## 4. Página de pedido
+
+`pedido.html` é separada da landing e **não é o caminho principal**: quem chega
+pela campanha cai no WhatsApp, e é o agente que manda este link depois de
+qualificar o lojista. A landing só tem um atalho em texto no fechamento, sem
+peso de botão, para quem já sabe o que quer.
+
+A oferta é Kit Vitrine, 5 unidades entre as 5 fragrâncias, R$ 169, pagamento na
+entrega. O contador trava em 5 — não dá para enviar um kit inválido.
+
+O contrato do webhook, os pontos da spec que precisam de ajuste e o que fazer
+quando o POST falha estão em **[INTEGRACAO-EVOLUZECHAT.md](INTEGRACAO-EVOLUZECHAT.md)**.
+
+---
+
+## 5. Estrutura
 
 ```
 1. Hero               8. Entrega
@@ -100,7 +118,7 @@ basta pôr `data-evento="Nome"` na tag.
 
 ---
 
-## 5. Decisões de design
+## 6. Decisões de design
 
 **Zero imagem gerada.** Não há textura, respingo desenhado nem frasco vetorial.
 Tudo que aparece é foto real ou tipografia. Numa página que existe para provar
@@ -116,7 +134,7 @@ diferencia um card do outro.
 esquerda no mesmo eixo, micro-rótulos em caixa alta, fios capilares, algarismos
 tabulares.
 
-**O dourado aparece em 2 lugares:** o "&" do logo e o R$ 470. O "R$ 329" do hero
+**O dourado aparece em 2 lugares:** o "&" do logo e o R$ 230. O "R$ 169" do hero
 é preto de propósito — assim o único número dourado da página é o lucro do
 lojista. Sobre branco o `#C89B5F` dá 2,5:1 e reprova em acessibilidade; é por
 isso que o bloco da margem é uma chapa preta, onde ele chega a 7,5:1.
@@ -137,9 +155,14 @@ nas duas, sem CDN externo.
 **A lista de cidades saiu da seção de entrega.** Repetia, palavra por palavra, a
 frase da linha de cima.
 
+**O lucro é R$ 230, não R$ 230,50.** A margem por unidade é R$ 46,10 e 5 × 46,10
+dá R$ 230,50. A página mostra R$ 230 — arredondar para baixo nunca promete
+demais — e a nota diz "margem de R$ 46,10 por unidade" em vez de mostrar a
+multiplicação, que apareceria errada na tela.
+
 ---
 
-## 6. Scripts
+## 7. Scripts
 
 | Comando | O que faz |
 |---|---|

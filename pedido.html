@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Montar pedido — Kit Vitrine | Golden &amp; Grace</title>
+<meta name="description" content="Monte seu Kit Vitrine: 5 unidades entre as 5 fragrâncias, R$ 169, pagamento na entrega.">
+<meta name="robots" content="noindex">
+<meta name="theme-color" content="#111111">
+<link rel="icon" href="assets/favicon.svg" type="image/svg+xml">
+<link rel="preload" href="assets/fonts/playfair-latin.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="preload" href="assets/fonts/plex-latin.woff2" as="font" type="font/woff2" crossorigin>
+
+<style>
+@font-face{font-family:'Playfair Display';src:url(assets/fonts/playfair-latin.woff2) format('woff2');font-weight:600 700;font-style:normal;font-display:swap}
+@font-face{font-family:'IBM Plex Sans';src:url(assets/fonts/plex-latin.woff2) format('woff2');font-weight:400 600;font-style:normal;font-display:swap}
+
+:root{
+  --ink:#111111; --ink-2:#4A4A4A; --ink-3:#6B6B6B;
+  --gold:#C89B5F; --paper:#FFFFFF; --mist:#F4F4F4;
+  --linha:#E3E3E3; --claro-2:#C9C9C9; --whats:#25D366; --erro:#A32020;
+  --t-micro:.6875rem; --t-xs:.75rem; --t-sm:.875rem; --t-base:1rem; --t-lg:1.125rem;
+  --pad:1.25rem;
+  --serif:'Playfair Display','Iowan Old Style','Times New Roman',Times,serif;
+  --sans:'IBM Plex Sans',-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+}
+@media (min-width:48rem){:root{--pad:2.5rem}}
+
+*,*::before,*::after{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;color-scheme:light;background:var(--paper)}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);
+  font-size:var(--t-base);line-height:1.55;-webkit-font-smoothing:antialiased}
+img{display:block;max-width:100%;height:auto}
+h1,h2,h3,p{margin:0}
+[hidden]{display:none !important}
+:focus-visible{outline:3px solid var(--ink);outline-offset:3px;border-radius:2px}
+@media (prefers-reduced-motion: reduce){*,*::before,*::after{transition-duration:.01ms !important}}
+
+.wrap{width:100%;max-width:44rem;margin-inline:auto;padding-inline:var(--pad)}
+.topo{padding-block:1.75rem 1.25rem;border-bottom:1px solid var(--linha)}
+.logo__img{width:clamp(11rem,26vw,14rem)}
+.micro{display:block;font-size:var(--t-micro);font-weight:600;letter-spacing:.16em;
+  text-transform:uppercase;color:var(--ink-3)}
+.titulo{font-family:var(--serif);font-weight:700;font-size:clamp(1.6rem,6vw,2.1rem);
+  text-transform:uppercase;letter-spacing:.005em;line-height:1.14;font-variant-numeric:lining-nums}
+.lede{margin-top:.7rem;color:var(--ink-2);font-size:var(--t-lg)}
+
+/* resumo fixo da oferta */
+.oferta{display:flex;flex-wrap:wrap;gap:.4rem 1rem;align-items:baseline;
+  margin-top:1.25rem;padding:1rem 1.15rem;background:var(--mist)}
+.oferta b{font-family:var(--serif);font-weight:700;font-size:1.5rem;font-variant-numeric:lining-nums tabular-nums}
+.oferta span{font-size:var(--t-sm);color:var(--ink-2)}
+
+form{padding-block:2.25rem 3rem}
+fieldset{border:0;padding:0;margin:0 0 2.25rem}
+legend{padding:0;margin-bottom:.9rem}
+.rotulo{display:block;font-size:var(--t-sm);font-weight:600;margin-bottom:.35rem}
+.dica{display:block;font-size:var(--t-xs);color:var(--ink-3);font-weight:400;margin-top:.15rem}
+
+.campo{margin-bottom:1.1rem}
+input,select,textarea{
+  width:100%;min-height:3rem;padding:.7rem .85rem;border:1px solid var(--linha);
+  border-radius:2px;background:var(--paper);color:var(--ink);
+  font-family:var(--sans);font-size:var(--t-base);
+}
+select{appearance:none;background-image:linear-gradient(45deg,transparent 49%,var(--ink-3) 50%),linear-gradient(-45deg,transparent 49%,var(--ink-3) 50%);
+  background-size:6px 6px;background-position:right 1.1rem top 55%,right .75rem top 55%;background-repeat:no-repeat;padding-right:2.25rem}
+input:focus,select:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 2px rgba(17,17,17,.12)}
+.dupla{display:grid;gap:1.1rem}
+@media (min-width:34rem){.dupla{grid-template-columns:1fr 1fr}}
+
+/* contador de fragrâncias */
+.frag{display:flex;align-items:center;gap:.85rem;padding:.7rem 0;border-top:1px solid var(--linha)}
+.frag:last-of-type{border-bottom:1px solid var(--linha)}
+.frag__cor{flex:none;width:.75rem;height:.75rem;border-radius:50%;background:var(--acento)}
+.frag__nome{flex:1 1 auto;font-family:var(--serif);font-weight:600;font-size:1.0625rem}
+.passo{display:flex;align-items:center;gap:.25rem}
+.passo button{
+  width:2.75rem;height:2.75rem;border:1px solid var(--linha);border-radius:2px;
+  background:var(--paper);color:var(--ink);font-size:1.25rem;line-height:1;cursor:pointer;
+}
+.passo button:disabled{color:var(--claro-2);cursor:default}
+.passo output{min-width:2rem;text-align:center;font-variant-numeric:tabular-nums;font-weight:600}
+
+.total{display:flex;justify-content:space-between;align-items:baseline;
+  margin-top:1rem;font-size:var(--t-sm);color:var(--ink-2)}
+.total b{font-variant-numeric:tabular-nums;color:var(--ink)}
+.total.err b{color:var(--erro)}
+
+.erro{display:block;margin-top:.35rem;font-size:var(--t-sm);color:var(--erro)}
+
+.btn{display:inline-flex;align-items:center;justify-content:center;gap:.65rem;
+  width:100%;min-height:3.5rem;padding:1rem 1.5rem;border:0;border-radius:2px;
+  background:var(--ink);color:var(--paper);font-family:var(--sans);
+  font-size:var(--t-lg);font-weight:600;cursor:pointer;text-decoration:none;
+  transition:background-color .16s ease}
+.btn:hover{background:#000}
+.btn[disabled]{background:#8A8A8A;cursor:default}
+.btn--whats{background:var(--whats);color:var(--ink)}
+.btn--whats:hover{background:#1FBE5A}
+.btn svg{flex:none}
+@media (min-width:48rem){.btn{width:auto;padding-inline:2.5rem}}
+
+.aviso{margin-top:1rem;font-size:var(--t-sm);color:var(--ink-3)}
+
+/* confirmação */
+.feito{padding-block:3rem 4rem}
+.feito__id{font-family:var(--serif);font-weight:700;font-size:1.25rem;
+  font-variant-numeric:lining-nums tabular-nums;margin-top:.4rem}
+.recibo{margin-top:1.5rem;border-top:1px solid var(--linha)}
+.recibo div{display:flex;justify-content:space-between;gap:1rem;
+  padding:.7rem 0;border-bottom:1px solid var(--linha);font-size:var(--t-sm)}
+.recibo dt{color:var(--ink-3)}
+.recibo dd{margin:0;text-align:right;font-weight:600}
+.rodape{border-top:1px solid var(--linha);padding-block:1.5rem 3rem;
+  font-size:var(--t-xs);color:var(--ink-3)}
+</style>
+</head>
+
+<body>
+
+<header class="topo">
+  <div class="wrap">
+    <img class="logo__img" src="assets/logo.webp" alt="Golden &amp; Grace" width="900" height="134">
+  </div>
+</header>
+
+<main class="wrap">
+
+  <!-- ═════════ FORMULÁRIO ═════════ -->
+  <div id="etapa-form">
+    <div style="padding-top:2rem">
+      <p class="micro">Atacado · Baixada Santista</p>
+      <h1 class="titulo" style="margin-top:.7rem">Montar meu pedido</h1>
+      <p class="lede">Leva um minuto. Você não paga nada agora.</p>
+
+      <p class="oferta">
+        <b>R$ 169</b>
+        <span>Kit Vitrine · 5 unidades de 200 ml · tester incluso</span>
+        <span>Pagamento na entrega · troca em 45 dias</span>
+      </p>
+    </div>
+
+    <form id="form" novalidate>
+
+      <fieldset>
+        <legend class="rotulo">As 5 unidades
+          <span class="dica">Uma de cada, ou repita a que sai mais. O total precisa fechar em 5.</span>
+        </legend>
+        <div id="frascos"></div>
+        <p class="total" id="total"><span>Total montado</span><b><span id="soma">5</span> de 5</b></p>
+      </fieldset>
+
+      <fieldset>
+        <legend class="rotulo">Sua loja</legend>
+        <div class="campo">
+          <label class="rotulo" for="loja">Nome da loja</label>
+          <input id="loja" name="loja" autocomplete="organization" required>
+        </div>
+        <div class="dupla">
+          <div class="campo">
+            <label class="rotulo" for="responsavel">Quem recebe</label>
+            <input id="responsavel" name="responsavel" autocomplete="name" required>
+          </div>
+          <div class="campo">
+            <label class="rotulo" for="whatsapp">WhatsApp</label>
+            <input id="whatsapp" name="whatsapp" type="tel" inputmode="numeric"
+                   placeholder="(13) 99999-9999" autocomplete="tel" required>
+          </div>
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="rotulo">Onde entregar</legend>
+        <div class="dupla">
+          <div class="campo">
+            <label class="rotulo" for="cidade">Cidade</label>
+            <select id="cidade" name="cidade" required>
+              <option value="">Selecione</option>
+              <option>Santos</option>
+              <option>São Vicente</option>
+              <option>Praia Grande</option>
+              <option>Cubatão</option>
+            </select>
+          </div>
+          <div class="campo">
+            <label class="rotulo" for="bairro">Bairro</label>
+            <input id="bairro" name="bairro" required>
+          </div>
+        </div>
+        <div class="campo">
+          <label class="rotulo" for="endereco">Endereço completo
+            <span class="dica">Rua, número e complemento.</span>
+          </label>
+          <input id="endereco" name="endereco" autocomplete="street-address" required>
+        </div>
+        <div class="campo">
+          <label class="rotulo" for="referencia">Ponto de referência
+            <span class="dica">Opcional, mas ajuda na entrega.</span>
+          </label>
+          <input id="referencia" name="referencia">
+        </div>
+      </fieldset>
+
+      <fieldset>
+        <legend class="rotulo">Quando</legend>
+        <div class="dupla">
+          <div class="campo">
+            <label class="rotulo" for="data_entrega">Dia da entrega</label>
+            <input id="data_entrega" name="data_entrega" type="date" required>
+          </div>
+          <div class="campo">
+            <label class="rotulo" for="janela">Período</label>
+            <select id="janela" name="janela" required>
+              <option value="">Selecione</option>
+              <option>Manhã</option>
+              <option>Tarde</option>
+            </select>
+          </div>
+        </div>
+        <div class="campo">
+          <label class="rotulo" for="pagamento">Forma de pagamento
+            <span class="dica">Você paga na entrega, com o produto na mão.</span>
+          </label>
+          <select id="pagamento" name="pagamento" required>
+            <option value="">Selecione</option>
+            <option>Pix</option>
+            <option>Cartão</option>
+            <option>Dinheiro</option>
+          </select>
+        </div>
+      </fieldset>
+
+      <button class="btn" id="enviar" type="submit">Confirmar pedido</button>
+      <p class="aviso">Ao confirmar, a gente recebe o pedido e te chama no WhatsApp para acertar os detalhes.</p>
+      <p class="erro" id="erro-geral" hidden></p>
+    </form>
+  </div>
+
+  <!-- ═════════ CONFIRMAÇÃO ═════════ -->
+  <div id="etapa-feito" class="feito" hidden>
+    <p class="micro">Pedido registrado</p>
+    <h1 class="titulo" style="margin-top:.7rem">Recebemos seu pedido.</h1>
+    <p class="feito__id" id="feito-id"></p>
+    <p class="lede" id="feito-texto"></p>
+
+    <dl class="recibo" id="recibo"></dl>
+
+    <div style="margin-top:2rem">
+      <a class="btn btn--whats" id="feito-whats" href="#" target="_blank" rel="noopener">
+        <svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.481-8.411"/></svg>
+        <span id="feito-whats-texto">Falar no WhatsApp</span>
+      </a>
+    </div>
+  </div>
+
+</main>
+
+<footer class="rodape">
+  <div class="wrap">
+    <p>Golden &amp; Grace · Venda no atacado · Estoque próprio em São Vicente.</p>
+  </div>
+</footer>
+
+<script>
+/* ══════════════════════════════════════════════════════════════════
+   CONFIGURAÇÃO — preencher antes de publicar
+
+   ATENÇÃO sobre o token: esta página é estática, então o token vai no
+   código e QUALQUER PESSOA consegue lê-lo abrindo o fonte. Ele não
+   autentica o lojista, só identifica a origem. O endpoint precisa tratar
+   isso como segredo público: limitar taxa por IP, recusar payload fora
+   do formato e nunca disparar ação irreversível só com base nele.
+   ══════════════════════════════════════════════════════════════════ */
+var CONFIG = {
+  endpoint: 'https://PREENCHER_ENDPOINT_EVOLUZECHAT',
+  token:    'PREENCHER_TOKEN',
+  whatsapp: '55PREENCHER_DDDNUMERO'   // rota de socorro se o POST não passar
+};
+
+var KIT = { nome: 'Kit Vitrine 5 un', valor: 169, unidades: 5 };
+var FRAGRANCIAS = [
+  { chave: 'sweet_reign',    nome: 'Sweet Reign',    cor: '#C4796B' },
+  { chave: 'royal_bloom',    nome: 'Royal Bloom',    cor: '#C22B5E' },
+  { chave: 'midnight_grace', nome: 'Midnight Grace', cor: '#1B4E9B' },
+  { chave: 'azure_mist',     nome: 'Azure Mist',     cor: '#1B8FD1' },
+  { chave: 'golden_aura',    nome: 'Golden Aura',    cor: '#C89B5F' }
+];
+var FILA = 'gg_pedidos_pendentes';
+
+/* ───────── contador das 5 unidades ───────── */
+var quantidades = {};
+FRAGRANCIAS.forEach(function (f) { quantidades[f.chave] = 1; });
+
+function somaUnidades() {
+  return FRAGRANCIAS.reduce(function (t, f) { return t + quantidades[f.chave]; }, 0);
+}
+
+function desenharFrascos() {
+  var alvo = document.getElementById('frascos');
+  alvo.innerHTML = '';
+  FRAGRANCIAS.forEach(function (f) {
+    var linha = document.createElement('div');
+    linha.className = 'frag';
+    linha.innerHTML =
+      '<span class="frag__cor" style="--acento:' + f.cor + '" aria-hidden="true"></span>' +
+      '<span class="frag__nome">' + f.nome + '</span>' +
+      '<span class="passo">' +
+        '<button type="button" data-menos aria-label="Tirar uma de ' + f.nome + '">−</button>' +
+        '<output aria-live="polite" aria-label="' + f.nome + '">' + quantidades[f.chave] + '</output>' +
+        '<button type="button" data-mais aria-label="Somar uma de ' + f.nome + '">+</button>' +
+      '</span>';
+    linha.querySelector('[data-menos]').onclick = function () { mudar(f.chave, -1); };
+    linha.querySelector('[data-mais]').onclick  = function () { mudar(f.chave, +1); };
+    alvo.appendChild(linha);
+  });
+  atualizarTotal();
+}
+
+function mudar(chave, delta) {
+  var novo = quantidades[chave] + delta;
+  if (novo < 0 || novo > KIT.unidades) return;
+  quantidades[chave] = novo;
+  desenharFrascos();
+}
+
+function atualizarTotal() {
+  var s = somaUnidades();
+  document.getElementById('soma').textContent = s;
+  document.getElementById('total').classList.toggle('err', s !== KIT.unidades);
+  // trava o + quando já fechou 5, para não deixar montar um kit inválido
+  document.querySelectorAll('[data-mais]').forEach(function (b) { b.disabled = s >= KIT.unidades; });
+  document.querySelectorAll('[data-menos]').forEach(function (b, i) {
+    b.disabled = quantidades[FRAGRANCIAS[i].chave] === 0;
+  });
+}
+
+/* ───────── utilidades ───────── */
+function param(nome) {
+  return new URLSearchParams(location.search).get(nome) || '';
+}
+
+function novoId() {
+  // A spec usa GG-<epoch em segundos> e deduplica por id. Dois pedidos no
+  // mesmo segundo colidiriam e o segundo seria descartado como duplicata —
+  // exatamente o pedido perdido em silêncio que a spec quer evitar.
+  var aleatorio = Math.random().toString(36).slice(2, 8).toUpperCase();
+  return 'GG-' + Math.floor(Date.now() / 1000) + '-' + aleatorio;
+}
+
+function agoraISO() {
+  var d = new Date();
+  var off = -d.getTimezoneOffset();
+  var sinal = off >= 0 ? '+' : '-';
+  var pad = function (n) { return String(Math.floor(Math.abs(n))).padStart(2, '0'); };
+  return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()) +
+         'T' + pad(d.getHours()) + ':' + pad(d.getMinutes()) + ':' + pad(d.getSeconds()) +
+         sinal + pad(off / 60) + ':' + pad(off % 60);
+}
+
+function diaPorExtenso(iso) {
+  if (!iso) return '';
+  var p = iso.split('-');
+  var d = new Date(+p[0], +p[1] - 1, +p[2]);
+  var semana = ['domingo', 'segunda', 'terça', 'quarta', 'quinta', 'sexta', 'sábado'];
+  return semana[d.getDay()] + ', ' + p[2] + '/' + p[1];
+}
+
+function soDigitos(v) { return (v || '').replace(/\D/g, ''); }
+
+/* ───────── mensagem do grupo, no formato do item 2 ───────── */
+function montarMensagem(p) {
+  var linhas = [
+    'NOVO PEDIDO — ' + p.id,
+    p.loja + ' · ' + p.bairro + ', ' + p.cidade,
+    KIT.unidades + ' un — R$ ' + KIT.valor + ' — ' + p.pagamento + ' na entrega',
+    diaPorExtenso(p.data_entrega) + ' — ' + p.janela,
+    p.endereco
+  ];
+  if (p.referencia) linhas.push('Ref: ' + p.referencia);
+  linhas.push('Contato: ' + p.whatsapp);
+  linhas.push(FRAGRANCIAS.map(function (f) {
+    return f.nome + ' ' + p.fragrancias[f.chave];
+  }).join(' · '));
+  return linhas.join('\n');
+}
+
+/* ───────── fila de retentativa ─────────
+   Guarda o pedido antes de tentar enviar. Se o POST falhar, ele fica na
+   fila e sai na próxima tentativa ou na próxima visita — o lojista não
+   depende de a rede estar boa no exato segundo em que confirmou. */
+function lerFila() {
+  try { return JSON.parse(localStorage.getItem(FILA) || '[]'); } catch (e) { return []; }
+}
+function gravarFila(f) {
+  try { localStorage.setItem(FILA, JSON.stringify(f)); } catch (e) { /* modo privado */ }
+}
+function enfileirar(p) {
+  var f = lerFila();
+  if (!f.some(function (x) { return x.id === p.id; })) { f.push(p); gravarFila(f); }
+}
+function desenfileirar(id) {
+  gravarFila(lerFila().filter(function (x) { return x.id !== id; }));
+}
+
+function enviar(p) {
+  return fetch(CONFIG.endpoint, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + CONFIG.token },
+    body: JSON.stringify(p),
+    keepalive: true
+  }).then(function (r) {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    desenfileirar(p.id);
+    return true;
+  });
+}
+
+function escoarFila() {
+  lerFila().forEach(function (p) { enviar(p).catch(function () {}); });
+}
+
+/* tenta de novo em 2s, 8s e 20s enquanto a página estiver aberta */
+function enviarComRetentativa(p) {
+  var esperas = [0, 2000, 8000, 20000];
+  return new Promise(function (resolve) {
+    (function tentar(i) {
+      setTimeout(function () {
+        enviar(p).then(function () { resolve(true); })
+          .catch(function () { i + 1 < esperas.length ? tentar(i + 1) : resolve(false); });
+      }, esperas[i]);
+    })(0);
+  });
+}
+
+/* ───────── envio ───────── */
+function validar() {
+  var faltando = [];
+  ['loja', 'responsavel', 'whatsapp', 'cidade', 'bairro', 'endereco', 'data_entrega', 'janela', 'pagamento']
+    .forEach(function (id) {
+      var el = document.getElementById(id);
+      if (!el.value.trim()) faltando.push(el);
+    });
+  var tel = soDigitos(document.getElementById('whatsapp').value);
+  if (tel && (tel.length < 10 || tel.length > 11)) faltando.push(document.getElementById('whatsapp'));
+
+  var erro = document.getElementById('erro-geral');
+  if (somaUnidades() !== KIT.unidades) {
+    erro.textContent = 'O kit precisa fechar em ' + KIT.unidades + ' unidades. Agora está com ' + somaUnidades() + '.';
+    erro.hidden = false;
+    document.getElementById('frascos').scrollIntoView({ block: 'center' });
+    return false;
+  }
+  if (faltando.length) {
+    erro.textContent = 'Faltou preencher: ' + faltando.map(function (el) {
+      var lab = document.querySelector('label[for="' + el.id + '"]');
+      return lab ? lab.childNodes[0].textContent.trim() : el.id;
+    }).join(', ') + '.';
+    erro.hidden = false;
+    faltando[0].focus();
+    return false;
+  }
+  erro.hidden = true;
+  return true;
+}
+
+function montarPayload() {
+  var v = function (id) { return document.getElementById(id).value.trim(); };
+  var p = {
+    evento: 'pedido_confirmado',
+    id: novoId(),
+    criado_em: agoraISO(),
+    kit: KIT.nome,
+    valor: KIT.valor,
+    fragrancias: JSON.parse(JSON.stringify(quantidades)),
+    total_unidades: somaUnidades(),
+    loja: v('loja'),
+    responsavel: v('responsavel'),
+    whatsapp: soDigitos(v('whatsapp')),
+    cidade: v('cidade'),
+    bairro: v('bairro'),
+    endereco: v('endereco'),
+    referencia: v('referencia'),
+    data_entrega: v('data_entrega'),
+    janela: v('janela'),
+    pagamento: v('pagamento'),
+    utm_source: param('utm_source'),
+    utm_medium: param('utm_medium'),
+    utm_campaign: param('utm_campaign'),
+    mensagem_grupo: '',
+    origem: 'landing_pedido'
+  };
+  p.mensagem_grupo = montarMensagem(p);
+  return p;
+}
+
+function mostrarConfirmacao(p, entregue) {
+  document.getElementById('etapa-form').hidden = true;
+  var feito = document.getElementById('etapa-feito');
+  feito.hidden = false;
+
+  document.getElementById('feito-id').textContent = p.id;
+  document.getElementById('feito-texto').textContent = entregue
+    ? 'A gente te chama no WhatsApp em instantes para confirmar a entrega.'
+    : 'Não conseguimos falar com o servidor agora. Toque no botão abaixo para mandar o pedido pelo WhatsApp — assim ele não se perde.';
+
+  var itens = [
+    ['Kit', KIT.nome + ' — R$ ' + KIT.valor],
+    ['Fragrâncias', FRAGRANCIAS.filter(function (f) { return p.fragrancias[f.chave] > 0; })
+      .map(function (f) { return f.nome + ' ' + p.fragrancias[f.chave]; }).join(' · ')],
+    ['Entrega', diaPorExtenso(p.data_entrega) + ', ' + p.janela.toLowerCase()],
+    ['Endereço', p.endereco + ' — ' + p.bairro + ', ' + p.cidade],
+    ['Pagamento', p.pagamento + ' na entrega']
+  ];
+  document.getElementById('recibo').innerHTML = itens.map(function (i) {
+    return '<div><dt>' + i[0] + '</dt><dd>' + i[1] + '</dd></div>';
+  }).join('');
+
+  var a = document.getElementById('feito-whats');
+  a.href = 'https://wa.me/' + CONFIG.whatsapp + '?text=' + encodeURIComponent(p.mensagem_grupo);
+  document.getElementById('feito-whats-texto').textContent =
+    entregue ? 'Falar no WhatsApp' : 'Enviar o pedido pelo WhatsApp';
+  window.scrollTo(0, 0);
+}
+
+/* ───────── início ───────── */
+(function () {
+  desenharFrascos();
+
+  // entrega em até 24h: o mais cedo possível é amanhã
+  var amanha = new Date(Date.now() + 86400000);
+  var iso = amanha.toISOString().slice(0, 10);
+  var data = document.getElementById('data_entrega');
+  data.min = iso;
+  data.value = iso;
+
+  escoarFila();
+
+  document.getElementById('form').addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validar()) return;
+
+    var botao = document.getElementById('enviar');
+    botao.disabled = true;
+    botao.textContent = 'Enviando...';
+
+    var p = montarPayload();
+    enfileirar(p);   // grava antes de tentar: se a aba morrer, o pedido sobrevive
+
+    enviarComRetentativa(p).then(function (ok) {
+      mostrarConfirmacao(p, ok);
+    });
+  });
+})();
+</script>
+
+</body>
+</html>

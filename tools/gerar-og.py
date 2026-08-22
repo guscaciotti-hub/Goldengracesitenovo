@@ -70,14 +70,14 @@ def main() -> None:
 
     # ── oferta ──
     d.text((MARGEM, 146), "Kit Vitrine", font=serif_lg, fill=INK)
-    d.text((MARGEM, 252), "10 unidades por R$ 329", font=serif_md, fill=INK)
+    d.text((MARGEM, 252), "5 unidades por R$ 169", font=serif_md, fill=INK)
     d.text((MARGEM, 330), "Você não paga nada agora.", font=sans, fill=INK)
     d.text((MARGEM, 364), "Paga na entrega, na sua loja.", font=sans, fill=(95, 95, 95))
 
     # ── faixa do lucro ──
     d.rectangle([0, FAIXA, L, A], fill=INK)
     centralizar(d, 486, "LUCRO POR KIT", sans, CINZA)
-    centralizar(d, 522, "R$ 470", serif_faixa, GOLD)
+    centralizar(d, 522, "R$ 230", serif_faixa, GOLD)
 
     tela.save(DESTINO, "PNG", optimize=True)
     print(f"assets/og.png  {DESTINO.stat().st_size // 1024} KB")
