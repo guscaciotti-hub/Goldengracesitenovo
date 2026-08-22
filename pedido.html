@@ -80,12 +80,53 @@ input:focus,select:focus{border-color:var(--ink);outline:none;box-shadow:0 0 0 2
 .dupla{display:grid;gap:1.1rem}
 @media (min-width:34rem){.dupla{grid-template-columns:1fr 1fr}}
 
-/* contador de fragrâncias */
-.frag{display:flex;align-items:center;gap:.85rem;padding:.7rem 0;border-top:1px solid var(--linha)}
+/* ── escolha das fragrâncias ─────────────────────────────────────────────
+   Cada linha mostra o frasco de verdade, a família, as notas do rótulo e a
+   referência olfativa. Quem está distribuindo as unidades quase nunca cheirou
+   os cinco — sem isso a tela pede uma decisão sobre cinco nomes abstratos.
+
+   O véu de cor atrás do frasco é o mesmo recurso da landing: o vidro é
+   transparente e, recortado do fundo, sobre branco ele sumiria.
+
+   A linha é uma grade de 2 colunas no celular (foto | texto, com o contador
+   embaixo do texto) e de 3 no desktop (foto | texto | contador). A foto ocupa
+   as duas fileiras, então a altura da linha é a altura da foto nos dois
+   casos — nenhum espaço sobrando de um lado nem do outro. */
+.frag{display:grid;grid-template-columns:auto minmax(0,1fr);gap:.6rem .9rem;
+  align-items:center;padding:.9rem 0;border-top:1px solid var(--linha)}
 .frag:last-of-type{border-bottom:1px solid var(--linha)}
-.frag__cor{flex:none;width:.75rem;height:.75rem;border-radius:50%;background:var(--acento)}
-.frag__nome{flex:1 1 auto;font-family:var(--serif);font-weight:600;font-size:1.0625rem}
+
+/* 3.5rem não é número redondo por acaso: nessa largura a foto fica com 140px
+   de altura, que é exatamente o que o texto + o contador ocupam empilhados no
+   celular e o que o texto sozinho pede no desktop. A linha fecha sem sobra de
+   um lado nem do outro nos dois tamanhos. */
+.frag__foto{grid-column:1;grid-row:1 / span 2;align-self:center;
+  width:3.5rem;border-radius:2px;overflow:hidden;
+  background:var(--mist);
+  background:color-mix(in srgb, var(--acento) 14%, #fff);
+  transition:opacity .16s ease}
+.frag__foto img{width:100%}
+
+.frag__txt{grid-column:2;grid-row:1;min-width:0}
+.frag__nome{display:block;font-family:var(--serif);font-weight:600;
+  font-size:1.0625rem;line-height:1.2}
+.frag__familia{display:block;margin-top:.25rem;font-size:var(--t-micro);
+  font-weight:600;letter-spacing:.11em;text-transform:uppercase;color:var(--ink-3)}
+.frag__notas{display:block;margin-top:.1rem;font-size:var(--t-xs);color:var(--ink-3)}
+.frag__ref{display:block;margin-top:.3rem;font-size:var(--t-xs);color:var(--ink-2)}
+.frag__ref b{font-weight:600;color:var(--ink)}
+
+/* fragrância zerada não some da lista, só recua um passo */
+.frag[data-n="0"] .frag__foto{opacity:.42}
+.frag[data-n="0"] .frag__nome{color:var(--ink-2)}
+
 .passo{display:flex;align-items:center;gap:.25rem}
+.frag .passo{grid-column:2;grid-row:2;justify-self:start}
+@media (min-width:34rem){
+  .frag{grid-template-columns:auto minmax(0,1fr) auto;gap:.6rem 1.1rem}
+  .frag__foto{grid-row:1}
+  .frag .passo{grid-column:3;grid-row:1;justify-self:end}
+}
 .passo button{
   width:2.75rem;height:2.75rem;border:1px solid var(--linha);border-radius:2px;
   background:var(--paper);color:var(--ink);font-size:1.25rem;line-height:1;cursor:pointer;
@@ -309,12 +350,25 @@ var CONFIG = {
 var KIT = { nome: 'Kit Vitrine 5 un', valor: 169, unidades: 5 };
 var KITS_MAX = 10;   // trava contra dedo gordo; acima disso a equipe passa condição
 var kits = 1;
+/* Família e notas saem do que está impresso no rótulo — não invente aqui, o
+   lojista compara com o frasco na mão. A referência é o que ele repete para a
+   cliente no balcão; deixe em branco e a linha simplesmente não aparece. */
 var FRAGRANCIAS = [
-  { chave: 'sweet_reign',    nome: 'Sweet Reign',    cor: '#C4796B' },
-  { chave: 'royal_bloom',    nome: 'Royal Bloom',    cor: '#C22B5E' },
-  { chave: 'midnight_grace', nome: 'Midnight Grace', cor: '#1B4E9B' },
-  { chave: 'azure_mist',     nome: 'Azure Mist',     cor: '#1B8FD1' },
-  { chave: 'golden_aura',    nome: 'Golden Aura',    cor: '#C89B5F' }
+  { chave: 'sweet_reign',    nome: 'Sweet Reign',    slug: 'sweet-reign',    cor: '#C4796B',
+    familia: 'Floral oriental',      notas: 'Limão · vanilla · musk',
+    referencia: 'La Vie Est Belle, da Lancôme' },
+  { chave: 'royal_bloom',    nome: 'Royal Bloom',    slug: 'royal-bloom',    cor: '#C22B5E',
+    familia: 'Floral amadeirado',    notas: 'Bergamota · âmbar',
+    referencia: 'Delina, da Parfums de Marly' },
+  { chave: 'midnight_grace', nome: 'Midnight Grace', slug: 'midnight-grace', cor: '#1B4E9B',
+    familia: 'Floral oriental',      notas: 'Sândalo · jasmim · baunilha',
+    referencia: 'Good Girl, da Carolina Herrera' },
+  { chave: 'azure_mist',     nome: 'Azure Mist',     slug: 'azure-mist',     cor: '#1B8FD1',
+    familia: 'Floral oriental musk', notas: 'Maçã · ambergris',
+    referencia: 'Light Blue, da Dolce &amp; Gabbana' },
+  { chave: 'golden_aura',    nome: 'Golden Aura',    slug: 'golden-aura',    cor: '#C89B5F',
+    familia: 'Floral frutado',       notas: 'Pera · ameixa · baunilha · amora',
+    referencia: 'J\'adore, da Dior' }
 ];
 var FILA = 'gg_pedidos_pendentes';
 
@@ -350,18 +404,34 @@ function mudarKits(delta) {
   if (novo < 1 || novo > KITS_MAX) return;
   kits = novo;
   ajustarPara(alvo());
-  desenharFrascos();
+  atualizarTotal();
 }
 
-function desenharFrascos() {
-  var alvo = document.getElementById('frascos');
-  alvo.innerHTML = '';
+/* A lista é montada uma vez e depois só tem os números atualizados. Redesenhar
+   tudo a cada clique destruía o botão recém-clicado: o foco caía no body e quem
+   navega por teclado perdia o lugar na lista a cada unidade somada. */
+var linhas = {};
+
+function montarFrascos() {
+  var caixa = document.getElementById('frascos');
+  caixa.innerHTML = '';
   FRAGRANCIAS.forEach(function (f) {
     var linha = document.createElement('div');
     linha.className = 'frag';
+    linha.style.setProperty('--acento', f.cor);
     linha.innerHTML =
-      '<span class="frag__cor" style="--acento:' + f.cor + '" aria-hidden="true"></span>' +
-      '<span class="frag__nome">' + f.nome + '</span>' +
+      '<div class="frag__foto">' +
+        '<img src="assets/frascos/mini/' + f.slug + '.webp" width="140" height="349" ' +
+             'decoding="async" alt="Frasco de ' + f.nome + ', 200 ml">' +
+      '</div>' +
+      '<div class="frag__txt">' +
+        '<span class="frag__nome">' + f.nome + '</span>' +
+        '<span class="frag__familia">' + f.familia + '</span>' +
+        '<span class="frag__notas">' + f.notas + '</span>' +
+        (f.referencia
+          ? '<span class="frag__ref"><b>Referência</b> · ' + f.referencia + '</span>'
+          : '') +
+      '</div>' +
       '<span class="passo">' +
         '<button type="button" data-menos aria-label="Tirar uma de ' + f.nome + '">−</button>' +
         '<output aria-live="polite" aria-label="' + f.nome + '">' + quantidades[f.chave] + '</output>' +
@@ -369,7 +439,12 @@ function desenharFrascos() {
       '</span>';
     linha.querySelector('[data-menos]').onclick = function () { mudar(f.chave, -1); };
     linha.querySelector('[data-mais]').onclick  = function () { mudar(f.chave, +1); };
-    alvo.appendChild(linha);
+    linhas[f.chave] = {
+      raiz:  linha,
+      saida: linha.querySelector('output'),
+      menos: linha.querySelector('[data-menos]')
+    };
+    caixa.appendChild(linha);
   });
   atualizarTotal();
 }
@@ -378,7 +453,7 @@ function mudar(chave, delta) {
   var novo = quantidades[chave] + delta;
   if (novo < 0 || novo > alvo()) return;
   quantidades[chave] = novo;
-  desenharFrascos();
+  atualizarTotal();
 }
 
 function atualizarTotal() {
@@ -397,8 +472,13 @@ function atualizarTotal() {
 
   // O + de cada fragrância nunca fica morto: passar do total é permitido e
   // avisado. Só o − trava, em zero, onde não há o que explicar.
-  document.querySelectorAll('[data-menos]').forEach(function (b, i) {
-    b.disabled = quantidades[FRAGRANCIAS[i].chave] === 0;
+  FRAGRANCIAS.forEach(function (f) {
+    var linha = linhas[f.chave];
+    if (!linha) return;
+    var n = quantidades[f.chave];
+    linha.saida.textContent = n;
+    linha.menos.disabled = n === 0;
+    linha.raiz.dataset.n = n;
   });
 
   var aviso = document.getElementById('erro-total');
@@ -607,7 +687,7 @@ function mostrarConfirmacao(p, entregue) {
 (function () {
   document.getElementById('kit-menos').onclick = function () { mudarKits(-1); };
   document.getElementById('kit-mais').onclick  = function () { mudarKits(+1); };
-  desenharFrascos();
+  montarFrascos();
 
   // entrega em até 24h: o mais cedo possível é amanhã
   var amanha = new Date(Date.now() + 86400000);

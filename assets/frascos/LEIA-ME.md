@@ -13,3 +13,8 @@ nunca uma moldura vazia.
 
 Converter: `cwebp -q 82 -resize 1000 0 foto.jpg -o sweet-reign.webp`
 Pode subir o `.jpg` aqui que a conversão é um comando.
+
+## mini/
+
+`mini/` é gerado pelo mesmo script — são as miniaturas de 140px que aparecem
+na lista de `pedido.html`. Não precisa subir nada aqui: saem do mesmo original.

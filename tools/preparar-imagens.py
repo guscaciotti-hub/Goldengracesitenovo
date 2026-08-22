@@ -57,6 +57,26 @@ def recorte_do_card(im: Image.Image) -> Image.Image:
     return sem_fundo(im).crop(caixa).resize((667, 1000), Image.LANCZOS)
 
 
+def recorte_da_mini(im: Image.Image) -> Image.Image:
+    """
+    Miniatura da lista de pedido: o frasco inteiro, enquadrado justo.
+
+    O recorte do card tem folga de sobra porque lá a foto ocupa a largura de
+    uma coluna. Na linha do pedido ela tem 48px — com a mesma folga o frasco
+    viraria um risco no meio de um retângulo vazio. Aqui a margem é só a
+    necessária para o vidro não encostar na borda do azulejo.
+    """
+    x0, x1, y0, y1 = BBOX
+    cx, cy = (x0 + x1) / 2, (y0 + y1) / 2
+    largura = round((x1 - x0) * 1.22)
+    altura = round((y1 - y0) * 1.05)
+    caixa = (round(cx - largura / 2), round(cy - altura / 2),
+             round(cx + largura / 2), round(cy + altura / 2))
+    cortado = sem_fundo(im).crop(caixa)
+    final_l = 140
+    return cortado.resize((final_l, round(cortado.height * final_l / cortado.width)), Image.LANCZOS)
+
+
 def frasco_recortado(im: Image.Image) -> Image.Image:
     """Só o frasco, já sem fundo, aparado no próprio contorno."""
     recortado = sem_fundo(im)
@@ -125,7 +145,7 @@ def preparar_logo(origem: pathlib.Path, destino: pathlib.Path, claro: bool = Fal
 
 
 def main() -> None:
-    (ASSETS / "frascos").mkdir(parents=True, exist_ok=True)
+    (ASSETS / "frascos" / "mini").mkdir(parents=True, exist_ok=True)
 
     frascos = []
     for slug, arquivo in FRAGRANCIAS:
@@ -133,6 +153,11 @@ def main() -> None:
         saida = ASSETS / "frascos" / f"{slug}.webp"
         recorte_do_card(im).save(saida, "WEBP", quality=84, method=6)
         print(f"  {saida.relative_to(RAIZ)}  {saida.stat().st_size // 1024} KB")
+
+        mini = ASSETS / "frascos" / "mini" / f"{slug}.webp"
+        recorte_da_mini(im).save(mini, "WEBP", quality=80, method=6)
+        print(f"  {mini.relative_to(RAIZ)}  {mini.stat().st_size / 1024:.1f} KB")
+
         frascos.append(frasco_recortado(im))
 
     lineup = ASSETS / "hero-composicao.webp"

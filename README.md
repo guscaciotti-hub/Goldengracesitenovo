@@ -100,9 +100,32 @@ A oferta é Kit Vitrine, 5 unidades entre as 5 fragrâncias, R$ 169, pagamento n
 entrega. O lojista escolhe **quantos kits** levar (teto de 10) e distribui as
 unidades entre as fragrâncias; o preço acompanha, `169 × kits`.
 
+Cada linha da distribuição traz a foto do frasco, a família, as notas do rótulo
+e a referência olfativa. Quem está distribuindo as unidades quase nunca cheirou
+as cinco — sem isso a tela pede uma decisão sobre cinco nomes abstratos. Os
+dados ficam no array `FRAGRANCIAS`, no topo do script; `referencia` em branco
+some da linha em vez de aparecer vazia.
+
+| | Família | Notas (do rótulo) | Referência |
+|---|---|---|---|
+| Sweet Reign | Floral oriental | limão, vanilla, musk | La Vie Est Belle, Lancôme |
+| Royal Bloom | Floral amadeirado | bergamota, âmbar | Delina, Parfums de Marly |
+| Midnight Grace | Floral oriental | sândalo, jasmim, baunilha | Good Girl, Carolina Herrera |
+| Azure Mist | Floral oriental musk | maçã, ambergris | Light Blue, Dolce &amp; Gabbana |
+| Golden Aura | Floral frutado | pera, ameixa, baunilha, amora | J'adore, Dior |
+
+A referência aparece só aqui, e `pedido.html` é `noindex`. Citar marca de
+terceiro é comparação descritiva e é prática corrente no ramo, mas continua
+sendo uso de marca alheia — numa página aberta a buscador e ligada a anúncio a
+exposição é outra. Por isso não subi para a landing sem combinar.
+
 O `+` de cada fragrância nunca fica desabilitado. Travar o botão quando o total
 fecha faz a tela parecer que só dá para pedir uma de cada — passar do total é
 permitido e avisado em vermelho, e o envio é que bloqueia.
+
+A lista é montada uma vez e depois só tem os números trocados. Redesenhar tudo
+a cada clique destruía o botão recém-clicado: o foco caía no `body` e quem
+navega por teclado perdia o lugar a cada unidade somada.
 
 O contrato do webhook, os pontos da spec que precisam de ajuste e o que fazer
 quando o POST falha estão em **[INTEGRACAO-EVOLUZECHAT.md](INTEGRACAO-EVOLUZECHAT.md)**.
@@ -210,7 +233,7 @@ multiplicação, que apareceria errada na tela.
 | Comando | O que faz |
 |---|---|
 | `./tools/aplicar-dominio.sh dominio.com.br` | liga o domínio próprio: cria o CNAME e preenche as tags |
-| `python3 tools/preparar-imagens.py` | recorta o fundo das fotos, gera os cards e o lineup do hero |
+| `python3 tools/preparar-imagens.py` | recorta o fundo das fotos, gera os cards, as miniaturas do pedido e o lineup do hero |
 | `python3 tools/gerar-og.py` | regera `assets/og.png`, o cartão de compartilhamento |
 | `./tools/preparar-fontes.sh` | baixa e reduz as fontes |
 | `python3 tools/testar.py` | sobe a página e tira prints em 375px e 1440px |
