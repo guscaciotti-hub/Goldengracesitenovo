@@ -111,33 +111,39 @@ quando o POST falha estão em **[INTEGRACAO-EVOLUZECHAT.md](INTEGRACAO-EVOLUZECH
 
 ## 5. Domínio próprio
 
-O site atende em **atacado.goldengrace.com.br**.
+O site atende em **goldengrace.com.br**.
 
-**Por que subdomínio e não o domínio raiz.** `goldengrace.com.br` já responde
-pelo Shopify (`23.227.38.65`) — é a loja de varejo, a mesma para onde o agente
-manda consumidora final. Apontar o raiz para o GitHub Pages derrubaria essa
-loja. Com subdomínio, nada do que já existe é tocado.
-
-**Passo 1 — no painel do registro.br**, na zona DNS, um registro só:
+**Passo 1 — no painel do registro.br**, na zona DNS do domínio. Apague os
+registros antigos que apontavam para o Shopify e ponha estes:
 
 | Tipo | Nome | Valor |
 |---|---|---|
-| CNAME | `atacado` | `guscaciotti-hub.github.io.` |
+| A | @ | `185.199.108.153` |
+| A | @ | `185.199.109.153` |
+| A | @ | `185.199.110.153` |
+| A | @ | `185.199.111.153` |
+| AAAA | @ | `2606:50c0:8000::153` |
+| AAAA | @ | `2606:50c0:8001::153` |
+| AAAA | @ | `2606:50c0:8002::153` |
+| AAAA | @ | `2606:50c0:8003::153` |
+| CNAME | `www` | `guscaciotti-hub.github.io.` |
 
-O ponto final no fim não é erro de digitação. **Não mexa em nenhum registro
-existente** — os do Shopify continuam como estão.
+Os quatro A são o mesmo servidor em endereços diferentes — todos são
+necessários, não é redundância. O ponto final no CNAME do `www` não é erro de
+digitação. Se o registro.br não aceitar AAAA, os quatro A já resolvem; IPv6 é
+desejável, não obrigatório.
 
-**Passo 2 — Settings → Pages → Custom domain**: escreva
-`atacado.goldengrace.com.br` e salve. Quando o DNS propagar, marque
-**Enforce HTTPS**; o certificado é automático e leva alguns minutos.
+**Passo 2 — Settings → Pages → Custom domain**: escreva `goldengrace.com.br` e
+salve. Quando o DNS propagar, marque **Enforce HTTPS**; o certificado é
+automático e leva alguns minutos depois que o domínio valida.
 
 Propagação no `.br` costuma levar de minutos a algumas horas. Até lá o
-`github.io` segue no ar, e depois passa a redirecionar para o domínio novo.
+`github.io` segue no ar, e depois passa a redirecionar para o domínio novo —
+nenhum link que você já tenha compartilhado quebra.
 
 **Editar continua igual:** push na branch, republica em ~30 s.
 
-Para trocar de endereço depois (outro subdomínio, ou o raiz caso a loja saia
-do Shopify): `./tools/aplicar-dominio.sh novo.endereco.com.br`.
+Trocar de endereço depois: `./tools/aplicar-dominio.sh outro.dominio.com.br`.
 
 ---
 
