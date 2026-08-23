@@ -64,14 +64,12 @@ botões do `index.html` (hero, fechamento e flutuante) e o `CONFIG.whatsapp` do
 `pedido.html`, que é a rota de socorro quando o POST não passa. Trocar de
 número é trocar nesses quatro.
 
-**Dois blocos comentados no `index.html` precisam ser abertos:**
+**Um bloco comentado no `index.html` ainda precisa ser aberto:**
 
 - **O rodapé legal** — razão social, CNPJ, endereço, responsável e forma de
   pagamento. É o principal elemento de credibilidade da página. Está comentado
   porque rodapé com "PREENCHER" à mostra prova o contrário do que a página
   inteira tenta provar.
-- **A pergunta "Preciso ter CNPJ?"** — falta a resposta. É provavelmente a
-  primeira dúvida do lojista.
 
 Em "A gente entrega pessoalmente", há um comentário indicando onde entram os
 nomes dos sócios.
