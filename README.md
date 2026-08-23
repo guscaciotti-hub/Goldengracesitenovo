@@ -54,12 +54,15 @@ com token à mostra é pior que foto sem legenda.
 
 | Token | O que é |
 |---|---|
-| `PREENCHER_DDDNUMERO` | só os dígitos com DDD, ex. `13991234567` — **3 botões** |
 | `PREENCHER_ENDPOINT_EVOLUZECHAT` | endpoint do webhook — em `pedido.html` |
 | `PREENCHER_TOKEN` | token do webhook — em `pedido.html` |
 | `PREENCHER_PIXEL_ID` | ID do Pixel da Meta |
-| `PREENCHER_DOMINIO` | domínio final, sem `https://` |
 | `PREENCHER_LOJA_1..3` | nome das lojas nas fotos de balcão |
+
+O WhatsApp da marca é **5513981010116**. Ele aparece em quatro lugares: os três
+botões do `index.html` (hero, fechamento e flutuante) e o `CONFIG.whatsapp` do
+`pedido.html`, que é a rota de socorro quando o POST não passa. Trocar de
+número é trocar nesses quatro.
 
 **Dois blocos comentados no `index.html` precisam ser abertos:**
 

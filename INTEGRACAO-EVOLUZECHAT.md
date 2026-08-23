@@ -122,7 +122,7 @@ No topo do `<script>` de `pedido.html`:
 var CONFIG = {
   endpoint: 'https://PREENCHER_ENDPOINT_EVOLUZECHAT',
   token:    'PREENCHER_TOKEN',
-  whatsapp: '55PREENCHER_DDDNUMERO'
+  whatsapp: '5513981010116'
 };
 ```
 
